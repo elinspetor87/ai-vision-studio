@@ -84,14 +84,24 @@ export const getAvailabilityByDate = asyncHandler(
 // Set availability for a specific date (admin)
 export const setAvailability = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
+    console.log('📅 setAvailability called with:', JSON.stringify(req.body, null, 2));
+
     const { date, timeSlots, isBlocked, notes } = req.body;
 
     if (!date) {
+      console.warn('❌ Date missing in setAvailability');
       throw new AppError('Date is required', 400);
     }
 
+    // Handle date string to ensure correct Date object
     const dateObj = new Date(date);
+    if (isNaN(dateObj.getTime())) {
+      console.warn('❌ Invalid date format:', date);
+      throw new AppError('Invalid date format', 400);
+    }
     dateObj.setHours(0, 0, 0, 0);
+
+    console.log('🗓️ Processed Date:', dateObj.toISOString());
 
     // Upsert (update or insert)
     const availability = await TimeSlotAvailability.findOneAndUpdate(
@@ -99,6 +109,8 @@ export const setAvailability = asyncHandler(
       { timeSlots, isBlocked, notes },
       { new: true, upsert: true, runValidators: true }
     );
+
+    console.log('✅ Availability updated/created:', availability?._id);
 
     res.status(200).json({
       success: true,
