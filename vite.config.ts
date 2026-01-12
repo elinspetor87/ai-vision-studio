@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: './', // Use relative paths for assets to work in any deployment scenario
+  base: '/', // Use absolute paths for SPA routing to work correctly on sub-paths
   server: {
     host: "::",
     port: 8080,
