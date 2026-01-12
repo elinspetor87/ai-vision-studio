@@ -30,18 +30,28 @@ const app: Application = express();
 app.use(helmet());
 
 // CORS configuration
+const allowedOrigins = isDevelopment ? true : [
+  env.CLIENT_URL,
+  env.ADMIN_URL,
+  'https://ai-vision-studio.vercel.app',
+  'https://www.felipealmeida.studio',
+  'https://felipealmeida.studio'
+].filter(Boolean);
+
 app.use(cors({
-  origin: isDevelopment ? true : [
-    env.CLIENT_URL,
-    env.ADMIN_URL,
-    'http://localhost:5173',
-    'http://localhost:8080',
-    'https://ai-vision-studio.vercel.app',
-    'https://www.felipealmeida.studio',
-    'https://felipealmeida.studio'
-  ].filter(Boolean),
+  origin: (origin, callback) => {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin || isDevelopment) return callback(null, true);
+
+    if (Array.isArray(allowedOrigins) && allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    } else {
+      console.warn(`⚠️ CORS blocked for origin: ${origin}`);
+      return callback(null, false);
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
 }));
 

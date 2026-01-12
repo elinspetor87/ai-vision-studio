@@ -134,7 +134,7 @@ const HeroSection = () => {
 
       {/* Version Indicator for verification */}
       <div className="absolute bottom-4 right-4 text-[10px] text-muted-foreground/30 font-mono">
-        v1.1.2
+        v1.1.3
       </div>
     </section>
   );

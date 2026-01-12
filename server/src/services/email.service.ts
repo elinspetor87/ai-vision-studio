@@ -58,8 +58,8 @@ const sendMail = async (options: nodemailer.SendMailOptions) => {
 interface ContactSubmissionData {
   name: string;
   email: string;
-  date: Date;
-  time: string;
+  date?: Date | string;
+  time?: string;
   message: string;
 }
 
@@ -67,16 +67,32 @@ interface ContactSubmissionData {
 export const sendContactNotificationToAdmin = async (
   submission: ContactSubmissionData
 ): Promise<void> => {
-  const formattedDate = new Date(submission.date).toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const formattedDate = submission.date
+    ? new Date(submission.date).toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+    : 'Not specified';
+
+  const displayTime = submission.time || 'Not specified';
+
+  // Try to get recipient email from DB settings
+  let adminEmail = env.ADMIN_EMAIL;
+  try {
+    const settings = await Settings.findOne();
+    if (settings && settings.contactEmail) {
+      adminEmail = settings.contactEmail;
+      console.log(`📧 Using database configured admin email: ${adminEmail}`);
+    }
+  } catch (error) {
+    console.warn('⚠️ Could not fetch recipient email from DB settings, using env fallback');
+  }
 
   const mailOptions = {
     from: env.EMAIL_USER,
-    to: env.ADMIN_EMAIL,
+    to: adminEmail,
     subject: `🎬 New Meeting Request from ${submission.name}`,
     html: `
       <!DOCTYPE html>
@@ -147,12 +163,16 @@ export const sendContactNotificationToAdmin = async (
 export const sendContactConfirmationToUser = async (
   submission: ContactSubmissionData
 ): Promise<void> => {
-  const formattedDate = new Date(submission.date).toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const formattedDate = submission.date
+    ? new Date(submission.date).toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+    : null;
+
+  const displayTime = submission.time || null;
 
   const mailOptions = {
     from: env.EMAIL_USER,
@@ -182,10 +202,12 @@ export const sendContactConfirmationToUser = async (
 
               <p>Thank you for your interest in working together! I've received your meeting request and will get back to you shortly.</p>
 
+              ${formattedDate ? `
               <div class="highlight">
                 <strong>📅 Requested Date:</strong> ${formattedDate}<br>
-                <strong>⏰ Requested Time:</strong> ${submission.time}
+                ${displayTime ? `<strong>⏰ Requested Time:</strong> ${displayTime}` : ''}
               </div>
+              ` : '<p>I have received your message and will get back to you shortly.</p>'}
 
               <p>I'll review your message and send you a calendar invite or alternative time slots if needed.</p>
 
