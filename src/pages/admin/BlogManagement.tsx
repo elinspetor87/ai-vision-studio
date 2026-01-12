@@ -3,6 +3,7 @@ import { blogService } from '@/services/blogService';
 import { Loader2, Plus, Edit, Trash2, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const queryClient = useQueryClient();
 
@@ -14,8 +15,12 @@ const deleteMutation = useMutation({
 });
 
 const handleDelete = async (id: string) => {
-  if (confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
+  console.log('🖱️ Delete request initiated for ID:', id);
+  if (confirm('Are you sure you want to delete this post?')) {
+    console.log('✅ Confirmation received. Mutating...');
     deleteMutation.mutate(id);
+  } else {
+    console.log('❌ Deletion cancelled by user.');
   }
 };
 
@@ -26,7 +31,7 @@ return (
       <div>
         <h1 className="font-display text-3xl font-bold mb-2">Blog Posts</h1>
         <p className="font-body text-muted-foreground">
-          Manage your blog posts and articles
+          Manage your blog posts and articles <span className="text-xs bg-primary/20 px-2 py-0.5 rounded text-primary ml-2">v1.2 Debug</span>
         </p>
       </div>
 
