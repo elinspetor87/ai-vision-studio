@@ -1,5 +1,6 @@
 import { Play, Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import { settingsService } from '@/services/settingsService';
 import AnimatedText from './animations/AnimatedText';
 
@@ -115,12 +116,12 @@ const HeroSection = () => {
               <Play className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
               View Showreel
             </a>
-            <a
-              href="#contact"
+            <Link
+              to="/contact"
               className="inline-flex items-center gap-3 px-8 py-4 border border-border text-foreground font-body font-medium tracking-wide rounded-full transition-all duration-300 hover:bg-secondary hover:border-primary/50"
             >
               Get in Touch
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -130,6 +131,11 @@ const HeroSection = () => {
       {/* Film strip decoration */}
       <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-background to-transparent opacity-50" />
       <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-background to-transparent opacity-50" />
+
+      {/* Version Indicator for verification */}
+      <div className="absolute bottom-4 right-4 text-[10px] text-muted-foreground/30 font-mono">
+        v1.1.2
+      </div>
     </section>
   );
 };
