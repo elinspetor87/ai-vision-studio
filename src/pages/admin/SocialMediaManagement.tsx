@@ -47,7 +47,9 @@ const SocialMediaManagement = () => {
       setFormData({ platform: 'Instagram', username: '', url: '', enabled: true });
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Falha ao criar link');
+      console.error('❌ Create Link Error:', error);
+      const message = error.response?.data?.message || error.message || 'Falha ao criar link';
+      toast.error(message);
     },
   });
 
@@ -60,7 +62,9 @@ const SocialMediaManagement = () => {
       setEditingId(null);
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Falha ao atualizar link');
+      console.error('❌ Update Link Error:', error);
+      const message = error.response?.data?.message || error.message || 'Falha ao atualizar link';
+      toast.error(message);
     },
   });
 
@@ -71,7 +75,9 @@ const SocialMediaManagement = () => {
       queryClient.invalidateQueries({ queryKey: ['social-media-admin'] });
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Falha ao deletar link');
+      console.error('❌ Delete Link Error:', error);
+      const message = error.response?.data?.message || error.message || 'Falha ao deletar link';
+      toast.error(message);
     },
   });
 
@@ -231,11 +237,10 @@ const SocialMediaManagement = () => {
                       <h3 className="font-body font-semibold text-foreground">
                         {link.platform}
                       </h3>
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        link.enabled
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${link.enabled
                           ? 'bg-green-500/20 text-green-500'
                           : 'bg-gray-500/20 text-gray-500'
-                      }`}>
+                        }`}>
                         {link.enabled ? 'Ativo' : 'Inativo'}
                       </span>
                     </div>

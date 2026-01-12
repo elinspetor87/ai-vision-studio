@@ -30,13 +30,21 @@ export const getAllSocialMediaLinks = asyncHandler(
 // Create social media link (admin only)
 export const createSocialMediaLink = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
-    const link = await SocialMedia.create(req.body);
-
-    res.status(201).json({
-      success: true,
-      message: 'Social media link created successfully',
-      data: link,
-    });
+    console.log('📝 Creating Social Media Link:', req.body);
+    try {
+      const link = await SocialMedia.create(req.body);
+      res.status(201).json({
+        success: true,
+        message: 'Social media link created successfully',
+        data: link,
+      });
+    } catch (error: any) {
+      console.error('❌ Social Media Creation Error:', error.message);
+      if (error.errors) {
+        console.error('   - Validation Errors:', JSON.stringify(error.errors, null, 2));
+      }
+      throw error;
+    }
   }
 );
 
