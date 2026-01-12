@@ -42,7 +42,17 @@ const getTransporter = async () => {
 // Helper middleware to send mail with dynamic transporter
 const sendMail = async (options: nodemailer.SendMailOptions) => {
   const transporter = await getTransporter();
-  return transporter.sendMail(options);
+  try {
+    console.log(`📧 Attempting to send email to: ${options.to}`);
+    const info = await transporter.sendMail(options);
+    console.log('✅ Email sent successfully:', info.messageId);
+    return info;
+  } catch (error: any) {
+    console.error('❌ Failed to send email:');
+    console.error('   - Error:', error.message);
+    console.error('   - Code:', error.code);
+    throw error;
+  }
 };
 
 interface ContactSubmissionData {
