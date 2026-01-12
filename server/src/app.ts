@@ -89,6 +89,7 @@ app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
     message: 'AI Vision Studio API is running',
+    version: 'v1.1.3-cors-debug',
     timestamp: new Date().toISOString(),
     environment: env.NODE_ENV,
   });
