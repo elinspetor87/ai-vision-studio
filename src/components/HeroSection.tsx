@@ -40,8 +40,15 @@ const HeroSection = () => {
   };
 
   useEffect(() => {
-    setIsVisible(true);
-  }, []);
+    if (!isLoading) {
+      // Small delay to ensure render phase is done
+      const timer = setTimeout(() => {
+        setIsVisible(true);
+        console.log('✨ Hero Section Visible. Data:', heroData);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading]);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-hero-gradient film-grain">
