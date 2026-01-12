@@ -12,8 +12,16 @@ import authRoutes from './routes/auth.routes';
 import blogRoutes from './routes/blog.routes';
 import filmRoutes from './routes/film.routes';
 import videoRoutes from './routes/video.routes';
-import contactRoutes from './routes/contact.routes';
+import projectRoutes from './routes/project.routes';
 import uploadRoutes from './routes/upload.routes';
+import settingsRoutes from './routes/settings.routes';
+import userRoutes from './routes/user.routes';
+import commentRoutes from './routes/comment.routes';
+import socialMediaRoutes from './routes/socialMedia.routes';
+import calendarRoutes from './routes/calendar.routes';
+import contactRoutes from './routes/contact.routes';
+import availabilityRoutes from './routes/availability.routes';
+import newsletterRoutes from './routes/newsletter';
 
 const app: Application = express();
 
@@ -25,7 +33,7 @@ app.use(cors({
   origin: isDevelopment ? true : [env.CLIENT_URL, env.ADMIN_URL],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
 }));
 
 // Rate limiting
@@ -37,11 +45,14 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-app.use('/api', limiter);
+if (!isDevelopment) {
+  app.use('/api', limiter);
+}
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
 
 // Health check endpoint
 app.get('/health', (req: Request, res: Response) => {
@@ -58,8 +69,16 @@ app.use('/api/auth', authRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/films', filmRoutes);
 app.use('/api/videos', videoRoutes);
-app.use('/api/contact', contactRoutes);
+app.use('/api/projects', projectRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/comments', commentRoutes);
+app.use('/api/social-media', socialMediaRoutes);
+app.use('/api/calendar', calendarRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/availability', availabilityRoutes);
+app.use('/api/newsletter', newsletterRoutes);
 
 // 404 handler
 app.use((req: Request, res: Response) => {

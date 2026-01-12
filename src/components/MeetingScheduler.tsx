@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,8 +9,9 @@ import { cn } from '@/lib/utils';
 import { format, addDays, isWeekend } from 'date-fns';
 import { toast } from 'sonner';
 import { contactService } from '@/services/contactService';
+import api from '@/config/api';
 
-const timeSlots = [
+const allTimeSlots = [
   '09:00 AM',
   '10:00 AM',
   '11:00 AM',
@@ -31,6 +32,21 @@ const MeetingScheduler = () => {
     message: '',
   });
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Fetch available time slots when a date is selected
+  const { data: availabilityData, isLoading: isLoadingAvailability } = useQuery({
+    queryKey: ['available-slots', selectedDate],
+    queryFn: async () => {
+      if (!selectedDate) return null;
+      const dateString = format(selectedDate, 'yyyy-MM-dd');
+      const response = await api.get(`/api/calendar/available-slots?date=${dateString}`);
+      return response.data.data;
+    },
+    enabled: !!selectedDate && step === 'time',
+  });
+
+  const availableSlots = availabilityData?.availableSlots || allTimeSlots;
+  const busySlots = availabilityData?.busySlots || [];
 
   const submitMutation = useMutation({
     mutationFn: contactService.submitContactForm,
@@ -193,22 +209,43 @@ const MeetingScheduler = () => {
                   <p className="font-body text-muted-foreground mb-8">
                     {format(selectedDate, 'EEEE, MMMM d, yyyy')}
                   </p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-lg">
-                    {timeSlots.map((time) => (
-                      <button
-                        key={time}
-                        onClick={() => handleTimeSelect(time)}
-                        className={cn(
-                          'px-4 py-3 rounded-xl font-body text-sm font-medium border transition-all duration-300',
-                          selectedTime === time
-                            ? 'bg-primary text-primary-foreground border-primary'
-                            : 'bg-card border-border hover:border-primary hover:bg-primary/10'
-                        )}
-                      >
-                        {time}
-                      </button>
-                    ))}
-                  </div>
+                  {isLoadingAvailability ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                      <span className="ml-2 text-sm text-muted-foreground">Checking availability...</span>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full max-w-lg">
+                        {allTimeSlots.map((time) => {
+                          const isBusy = busySlots.includes(time);
+                          const isAvailable = availableSlots.includes(time);
+
+                          return (
+                            <button
+                              key={time}
+                              onClick={() => !isBusy && handleTimeSelect(time)}
+                              disabled={isBusy}
+                              className={cn(
+                                'px-4 py-3 rounded-xl font-body text-sm font-medium border transition-all duration-300',
+                                isBusy && 'opacity-50 cursor-not-allowed bg-muted border-muted line-through',
+                                !isBusy && selectedTime === time && 'bg-primary text-primary-foreground border-primary',
+                                !isBusy && selectedTime !== time && 'bg-card border-border hover:border-primary hover:bg-primary/10'
+                              )}
+                              title={isBusy ? 'This time slot is not available' : 'Select this time slot'}
+                            >
+                              {time}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      {busySlots.length > 0 && (
+                        <p className="mt-4 text-xs text-muted-foreground">
+                          {busySlots.length} time slot{busySlots.length > 1 ? 's' : ''} unavailable due to existing commitments
+                        </p>
+                      )}
+                    </>
+                  )}
                   <button
                     onClick={() => setStep('date')}
                     className="mt-8 font-body text-sm text-muted-foreground hover:text-primary transition-colors"

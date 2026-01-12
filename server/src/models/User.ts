@@ -7,6 +7,10 @@ export interface IUser extends Document {
   password: string;
   name: string;
   role: UserRole;
+  profilePicture?: {
+    url: string;
+    publicId: string;
+  };
   lastLogin?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -38,6 +42,10 @@ const userSchema = new Schema<IUser>(
       type: String,
       enum: Object.values(UserRole),
       default: UserRole.ADMIN,
+    },
+    profilePicture: {
+      url: String,
+      publicId: String,
     },
     lastLogin: {
       type: Date,

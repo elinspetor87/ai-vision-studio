@@ -3,8 +3,12 @@ import { Film } from '../types';
 
 export const filmService = {
   // Get all films
-  getAllFilms: async (category?: string, featured?: boolean) => {
+  getAllFilms: async (status?: string, category?: string, featured?: boolean) => {
     const params = new URLSearchParams();
+
+    if (status) {
+      params.append('status', status);
+    }
 
     if (category) {
       params.append('category', category);

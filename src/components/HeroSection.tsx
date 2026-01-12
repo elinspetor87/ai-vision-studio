@@ -1,9 +1,34 @@
 import { useEffect, useState } from 'react';
-import { Play, ChevronDown } from 'lucide-react';
-import DustText from './DustText';
+import { Play } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { settingsService } from '@/services/settingsService';
+import AnimatedText from './animations/AnimatedText';
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
+
+  // Fetch settings for hero section
+  const { data: settings } = useQuery({
+    queryKey: ['settings'],
+    queryFn: () => settingsService.getSettings(),
+    staleTime: 10000,
+  });
+
+  // Default values if settings not loaded
+  const heroData = settings?.heroSection || {
+    line1: 'Crafting',
+    line2: 'Visual Stories',
+    line3: 'with AI',
+    tagline: 'AI Filmmaker & VFX Artist',
+    description: 'Blending decades of VFX expertise with cutting-edge AI technology to create cinematic experiences that push the boundaries of imagination.',
+    animation: {
+      animationType: 'fadeSlide' as const,
+      speed: 800,
+      delay: 100,
+      typewriterCursor: true,
+      glitchIntensity: 5,
+    },
+  };
 
   useEffect(() => {
     setIsVisible(true);
@@ -23,46 +48,65 @@ const HeroSection = () => {
       <div className="relative z-10 container mx-auto px-6 text-center">
         <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           {/* Tagline */}
-          <p 
-            className={`font-body text-sm md:text-base tracking-[0.3em] uppercase text-primary mb-6 ${
-              isVisible ? 'animate-fade-up' : ''
-            }`}
+          <p
+            className={`font-body text-sm md:text-base tracking-[0.3em] uppercase text-primary mb-6 ${isVisible ? 'animate-fade-up' : ''
+              }`}
           >
-            AI Filmmaker & VFX Artist
+            {heroData.tagline}
           </p>
 
-          {/* Main Title with Dust Effect */}
-          <h1 
-            className={`font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6 ${
-              isVisible ? 'animate-fade-up delay-200' : ''
-            }`}
+          {/* Main Title with Animated Text */}
+          <h1
+            className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6"
           >
-            <span className="block">
-              <DustText>Crafting</DustText>
-            </span>
-            <span className="block text-gradient">
-              <DustText className="text-gradient" speedMultiplier={4}>Visual Stories</DustText>
-            </span>
-            <span className="block text-foreground/80">
-              <DustText className="text-foreground/80">with AI</DustText>
-            </span>
+            {isVisible && (
+              <>
+                <AnimatedText
+                  text={heroData.line1}
+                  animationType={heroData.animation.animationType}
+                  speed={heroData.animation.speed}
+                  delay={heroData.animation.delay}
+                  typewriterCursor={heroData.animation.typewriterCursor}
+                  glitchIntensity={heroData.animation.glitchIntensity}
+                  lineNumber={0}
+                  className="block"
+                />
+                <AnimatedText
+                  text={heroData.line2}
+                  animationType={heroData.animation.animationType}
+                  speed={heroData.animation.speed}
+                  delay={heroData.animation.delay}
+                  typewriterCursor={heroData.animation.typewriterCursor}
+                  glitchIntensity={heroData.animation.glitchIntensity}
+                  lineNumber={1}
+                  className="block text-gradient"
+                />
+                <AnimatedText
+                  text={heroData.line3}
+                  animationType={heroData.animation.animationType}
+                  speed={heroData.animation.speed}
+                  delay={heroData.animation.delay}
+                  typewriterCursor={heroData.animation.typewriterCursor}
+                  glitchIntensity={heroData.animation.glitchIntensity}
+                  lineNumber={2}
+                  className="block text-foreground/80"
+                />
+              </>
+            )}
           </h1>
 
           {/* Description */}
-          <p 
-            className={`font-body text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 ${
-              isVisible ? 'animate-fade-up delay-400' : ''
-            }`}
+          <p
+            className={`font-body text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 ${isVisible ? 'animate-fade-up delay-400' : ''
+              }`}
           >
-            Blending decades of VFX expertise with cutting-edge AI technology 
-            to create cinematic experiences that push the boundaries of imagination.
+            {heroData.description}
           </p>
 
           {/* CTA Buttons */}
-          <div 
-            className={`flex flex-col sm:flex-row gap-4 justify-center ${
-              isVisible ? 'animate-fade-up delay-500' : ''
-            }`}
+          <div
+            className={`flex flex-col sm:flex-row gap-4 justify-center ${isVisible ? 'animate-fade-up delay-500' : ''
+              }`}
           >
             <a
               href="#work"
@@ -80,12 +124,7 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-          <a href="#about" className="text-muted-foreground hover:text-primary transition-colors">
-            <ChevronDown className="w-8 h-8" />
-          </a>
-        </div>
+
       </div>
 
       {/* Film strip decoration */}

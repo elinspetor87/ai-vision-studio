@@ -71,6 +71,36 @@ export interface VideoProject {
   updatedAt: Date;
 }
 
+export interface Project {
+  _id: string;
+  title: string;
+  slug: string;
+  role: string;
+  year: number;
+  category: string;
+  description: string;
+  thumbnail: {
+    url: string;
+    publicId: string;
+    alt?: string;
+  };
+  gallery: {
+    url: string;
+    publicId: string;
+    alt?: string;
+  }[];
+  videoUrl?: string;
+  links: {
+    label: string;
+    url: string;
+  }[];
+  order: number;
+  featured: boolean;
+  status: 'active' | 'archived';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface ContactSubmission {
   _id: string;
   name: string;

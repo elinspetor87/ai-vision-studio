@@ -8,7 +8,7 @@ const FilmsManagement = () => {
   const navigate = useNavigate();
   const { data: films, isLoading } = useQuery({
     queryKey: ['films-admin'],
-    queryFn: () => filmService.getAllFilms(),
+    queryFn: () => filmService.getAllFilms('all'),
   });
 
   return (

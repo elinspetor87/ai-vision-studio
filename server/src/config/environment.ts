@@ -19,6 +19,7 @@ interface Environment {
   ADMIN_EMAIL: string;
   CLIENT_URL: string;
   ADMIN_URL: string;
+  EMAIL_PASSWORD?: string;
 }
 
 const getEnvVar = (key: string, defaultValue?: string): string => {
@@ -45,6 +46,7 @@ export const env: Environment = {
   ADMIN_EMAIL: getEnvVar('ADMIN_EMAIL'),
   CLIENT_URL: getEnvVar('CLIENT_URL', 'http://localhost:5173'),
   ADMIN_URL: getEnvVar('ADMIN_URL', 'http://localhost:5174'),
+  EMAIL_PASSWORD: process.env.EMAIL_PASSWORD || process.env.EMAIL_APP_PASSWORD,
 };
 
 export const isDevelopment = env.NODE_ENV === 'development';

@@ -1,11 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Film, Menu, X } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { settingsService } from '@/services/settingsService';
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+
+  // Fetch settings for logo
+  const { data: settings } = useQuery({
+    queryKey: ['settings'],
+    queryFn: () => settingsService.getSettings(),
+    staleTime: 10000, // 10 seconds
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,8 +54,18 @@ const Navigation = () => {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group">
-            <Film className="w-8 h-8 text-primary transition-transform duration-300 group-hover:rotate-12" />
-            <span className="font-display text-xl font-semibold tracking-wide">FILMMAKER</span>
+            {settings?.logo?.url ? (
+              <img
+                src={settings.logo.url}
+                alt={settings.logo.alt || 'Logo'}
+                className="w-8 h-8 object-contain transition-transform duration-300 group-hover:scale-110"
+              />
+            ) : (
+              <Film className="w-8 h-8 text-primary transition-transform duration-300 group-hover:rotate-12" />
+            )}
+            <span className="font-display text-xl font-semibold tracking-wide">
+              {settings?.logoText || 'FILMMAKER'}
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

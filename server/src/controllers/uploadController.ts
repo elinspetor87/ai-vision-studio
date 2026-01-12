@@ -96,25 +96,37 @@ export const deleteImage = asyncHandler(
 // Upload general image (for any purpose)
 export const uploadImage = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log('📸 Upload request received');
+    console.log('File:', req.file ? 'Present' : 'Missing');
+    console.log('Body:', req.body);
+
     if (!req.file) {
+      console.error('❌ No file in request');
       throw new AppError('No image file provided', 400);
     }
 
     const { folder = 'general' } = req.body;
+    console.log(`📁 Uploading to folder: ${folder}`);
 
-    // Upload to Cloudinary
-    const result = await uploadToCloudinary(req.file.buffer, folder);
+    try {
+      // Upload to Cloudinary
+      const result = await uploadToCloudinary(req.file.buffer, folder);
+      console.log('✅ Upload successful:', result.public_id);
 
-    res.status(200).json({
-      success: true,
-      message: 'Image uploaded successfully',
-      data: {
-        url: result.secure_url,
-        publicId: result.public_id,
-        width: result.width,
-        height: result.height,
-        format: result.format,
-      },
-    });
+      res.status(200).json({
+        success: true,
+        message: 'Image uploaded successfully',
+        data: {
+          url: result.secure_url,
+          publicId: result.public_id,
+          width: result.width,
+          height: result.height,
+          format: result.format,
+        },
+      });
+    } catch (error) {
+      console.error('❌ Upload failed:', error);
+      throw error;
+    }
   }
 );

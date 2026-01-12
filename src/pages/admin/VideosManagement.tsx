@@ -1,12 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { videoService } from '@/services/videoService';
 import { Loader2, Plus, Edit, Trash2, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const VideosManagement = () => {
+  const navigate = useNavigate();
   const { data: videos, isLoading } = useQuery({
     queryKey: ['videos-admin'],
-    queryFn: () => videoService.getAllVideos(),
+    queryFn: () => videoService.getAllVideos('all'),
   });
 
   return (
@@ -20,7 +22,7 @@ const VideosManagement = () => {
           </p>
         </div>
 
-        <Button className="gap-2">
+        <Button className="gap-2" onClick={() => navigate('/admin/videos/add')}>
           <Plus className="w-4 h-4" />
           Add Video
         </Button>
@@ -34,7 +36,7 @@ const VideosManagement = () => {
       ) : !videos || videos.length === 0 ? (
         <div className="text-center py-20 bg-card border border-border rounded-xl">
           <p className="font-body text-muted-foreground mb-4">No videos yet</p>
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => navigate('/admin/videos/add')}>
             <Plus className="w-4 h-4" />
             Add your first video
           </Button>
@@ -58,7 +60,12 @@ const VideosManagement = () => {
                   </div>
                 </div>
                 <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Button size="icon" variant="secondary" className="w-8 h-8">
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    className="w-8 h-8"
+                    onClick={() => navigate(`/admin/videos/edit/${video._id}`)}
+                  >
                     <Edit className="w-3 h-3" />
                   </Button>
                   <Button size="icon" variant="secondary" className="w-8 h-8 text-red-500">

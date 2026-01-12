@@ -72,7 +72,7 @@ const BlogManagement = () => {
                           {post.status}
                         </span>
                         <span>{post.category}</span>
-                        <span>{post.viewCount} views</span>
+                        <span>{post.views} views</span>
                         <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                       </div>
                     </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { filmService } from '@/services/filmService';
+import { uploadService } from '@/services/uploadService';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -132,9 +133,18 @@ const FilmForm = () => {
         alt: formData.imageAlt,
       };
     } else if (imageFile) {
-      // TODO: Implement Cloudinary upload
-      toast.error('File upload requires Cloudinary configuration. Please use an image URL instead.');
-      return;
+      try {
+        toast.info('Uploading poster...');
+        const uploadResult = await uploadService.uploadFilmPoster(imageFile);
+        submitData.image = {
+          url: uploadResult.url,
+          publicId: uploadResult.publicId,
+          alt: formData.imageAlt,
+        };
+      } catch (error: any) {
+        toast.error(error.response?.data?.error || 'Failed to upload poster');
+        return;
+      }
     }
 
     if (isEditMode) {
@@ -214,8 +224,13 @@ const FilmForm = () => {
                 onChange={handleImageChange}
                 className="cursor-pointer"
               />
+              {imageFile && (
+                <p className="text-sm text-green-600 dark:text-green-400 mt-2">
+                  ✓ File selected: {imageFile.name}
+                </p>
+              )}
               <p className="text-xs text-muted-foreground mt-2">
-                Note: File upload requires Cloudinary configuration
+                Upload a poster image from your computer
               </p>
             </div>
           </div>

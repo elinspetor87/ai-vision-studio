@@ -9,6 +9,30 @@ export const authenticate = async (
   next: NextFunction
 ) => {
   try {
+    // Check for API Key first
+    const apiKey = req.headers['x-api-key'];
+    if (apiKey && typeof apiKey === 'string') {
+      const Settings = require('../models/Settings').default;
+      const settings = await Settings.findOne({ 'apiKeys.key': apiKey });
+
+      if (settings) {
+        // Find the specific key to update lastUsed
+        const keyData = settings.apiKeys.find((k: any) => k.key === apiKey);
+        if (keyData) {
+          keyData.lastUsed = new Date();
+          await settings.save();
+        }
+
+        // Grant Admin Access
+        req.user = {
+          id: 'api-key-user',
+          email: 'api@system.local',
+          role: 'admin',
+        };
+        return next();
+      }
+    }
+
     // Get token from Authorization header
     const authHeader = req.headers.authorization;
 

@@ -127,38 +127,58 @@ export const getPostById = asyncHandler(
 // Create new blog post
 export const createPost = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log('📝 Creating new blog post');
+    console.log('Post data:', JSON.stringify(req.body, null, 2));
+
     const postData = req.body;
 
-    const post = await BlogPost.create(postData);
+    try {
+      const post = await BlogPost.create(postData);
+      console.log('✅ Blog post created:', post._id);
 
-    res.status(201).json({
-      success: true,
-      message: 'Blog post created successfully',
-      data: post,
-    });
+      res.status(201).json({
+        success: true,
+        message: 'Blog post created successfully',
+        data: post,
+      });
+    } catch (error) {
+      console.error('❌ Failed to create blog post:', error);
+      throw error;
+    }
   }
 );
 
 // Update blog post
 export const updatePost = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log('📝 Updating blog post:', req.params.id);
+    console.log('Update data:', JSON.stringify(req.body, null, 2));
+
     const { id } = req.params;
     const updateData = req.body;
 
-    const post = await BlogPost.findByIdAndUpdate(id, updateData, {
-      new: true,
-      runValidators: true,
-    });
+    try {
+      const post = await BlogPost.findByIdAndUpdate(id, updateData, {
+        new: true,
+        runValidators: false,
+      });
 
-    if (!post) {
-      throw new AppError('Blog post not found', 404);
+      if (!post) {
+        console.error('❌ Blog post not found:', id);
+        throw new AppError('Blog post not found', 404);
+      }
+
+      console.log('✅ Blog post updated:', post._id);
+
+      res.status(200).json({
+        success: true,
+        message: 'Blog post updated successfully',
+        data: post,
+      });
+    } catch (error) {
+      console.error('❌ Failed to update blog post:', error);
+      throw error;
     }
-
-    res.status(200).json({
-      success: true,
-      message: 'Blog post updated successfully',
-      data: post,
-    });
   }
 );
 

@@ -5,9 +5,17 @@ import { AppError, asyncHandler } from '../middleware/error.middleware';
 // Get all video projects
 export const getAllVideos = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { status = 'active', featured } = req.query;
+    const { status, featured } = req.query;
 
-    const query: any = { status };
+    const query: any = {};
+
+    // Filter by status (default to active for public access)
+    if (status && status !== 'all') {
+      query.status = status;
+    } else if (!status) {
+      query.status = 'active';
+    }
+    // If status === 'all', don't filter by status at all
 
     if (featured === 'true') {
       query.featured = true;
@@ -87,7 +95,7 @@ export const updateVideo = asyncHandler(
 
     const video = await VideoProject.findByIdAndUpdate(id, updateData, {
       new: true,
-      runValidators: true,
+      runValidators: false,
     });
 
     if (!video) {

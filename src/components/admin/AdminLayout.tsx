@@ -5,20 +5,34 @@ import {
   FileText,
   Film,
   Video,
-  MessageSquare,
+  Settings,
+  Users,
   LogOut,
   Menu,
   X,
+  MessageCircle,
+  Share2,
+  Calendar,
+  Mail,
+  Clock,
+  Megaphone,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { name: 'Messages', href: '/admin/messages', icon: Mail },
+  { name: 'Availability', href: '/admin/availability', icon: Clock },
   { name: 'Blog Posts', href: '/admin/blog', icon: FileText },
+  { name: 'Comments', href: '/admin/comments', icon: MessageCircle },
+  { name: 'Calendar', href: '/admin/calendar', icon: Calendar },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: Megaphone },
   { name: 'Films', href: '/admin/films', icon: Film },
   { name: 'Videos', href: '/admin/videos', icon: Video },
-  { name: 'Messages', href: '/admin/messages', icon: MessageSquare },
+  { name: 'Social Media', href: '/admin/social-media', icon: Share2 },
+  { name: 'Users', href: '/admin/users', icon: Users },
+  { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
 const AdminLayout = () => {
@@ -43,9 +57,8 @@ const AdminLayout = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-card border-r border-border transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-card border-r border-border transform transition-transform duration-200 ease-in-out lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
@@ -70,11 +83,10 @@ const AdminLayout = () => {
                   key={item.name}
                   to={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-body text-sm font-medium transition-colors ${
-                    isActive
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg font-body text-sm font-medium transition-colors ${isActive
                       ? 'bg-primary text-primary-foreground'
                       : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-                  }`}
+                    }`}
                 >
                   <item.icon className="w-5 h-5" />
                   {item.name}

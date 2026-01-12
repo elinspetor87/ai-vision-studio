@@ -42,7 +42,7 @@ export const createBlogPostSchema = z.object({
     .optional(),
 });
 
-export const updateBlogPostSchema = createBlogPostSchema.partial();
+export const updateBlogPostSchema = createBlogPostSchema.deepPartial();
 
 // Film validation schemas
 export const createFilmSchema = z.object({
@@ -64,7 +64,7 @@ export const createFilmSchema = z.object({
   status: z.enum(['active', 'archived']).optional(),
 });
 
-export const updateFilmSchema = createFilmSchema.partial();
+export const updateFilmSchema = createFilmSchema.deepPartial();
 
 // Video Project validation schemas
 export const createVideoProjectSchema = z.object({
@@ -81,9 +81,39 @@ export const createVideoProjectSchema = z.object({
   description: z.string().optional(),
   order: z.number().optional(),
   featured: z.boolean().optional(),
+  status: z.enum(['active', 'archived']).optional(),
 });
 
-export const updateVideoProjectSchema = createVideoProjectSchema.partial();
+export const updateVideoProjectSchema = createVideoProjectSchema.deepPartial();
+
+// Project validation schemas
+export const createProjectSchema = z.object({
+  title: z.string().min(1),
+  role: z.string().min(1),
+  year: z.string().min(4).max(4),
+  category: z.string().min(1),
+  description: z.string().optional(),
+  thumbnail: z.object({
+    url: z.string().url(),
+    publicId: z.string().optional(),
+    alt: z.string().optional(),
+  }),
+  gallery: z.array(z.object({
+    url: z.string().url(),
+    publicId: z.string().optional(),
+    alt: z.string().optional(),
+  })).optional(),
+  videoUrl: z.string().url().optional().or(z.literal('')),
+  links: z.array(z.object({
+    label: z.string().min(1),
+    url: z.string().url(),
+  })).optional(),
+  order: z.number().optional(),
+  featured: z.boolean().optional(),
+  status: z.enum(['active', 'archived']).optional(),
+});
+
+export const updateProjectSchema = createProjectSchema.deepPartial();
 
 // Contact Form validation schema
 export const contactSubmissionSchema = z.object({
@@ -91,7 +121,7 @@ export const contactSubmissionSchema = z.object({
   email: z.string().email('Invalid email address'),
   date: z.string().or(z.date()),
   time: z.string().min(1, 'Time is required'),
-  message: z.string().min(10, 'Message must be at least 10 characters').max(1000),
+  message: z.string().max(1000).optional().or(z.literal('')),
 });
 
 // Helper function to validate request body

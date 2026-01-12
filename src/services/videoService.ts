@@ -3,8 +3,12 @@ import { VideoProject } from '../types';
 
 export const videoService = {
   // Get all video projects
-  getAllVideos: async (category?: string, featured?: boolean) => {
+  getAllVideos: async (status?: string, category?: string, featured?: boolean) => {
     const params = new URLSearchParams();
+
+    if (status) {
+      params.append('status', status);
+    }
 
     if (category) {
       params.append('category', category);

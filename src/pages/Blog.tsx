@@ -6,6 +6,8 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Calendar, Clock, ArrowRight, Loader2 } from 'lucide-react';
 import { blogService } from '@/services/blogService';
+import { newsletterService } from '@/services/newsletterService';
+import { toast } from 'sonner';
 
 const Blog = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,9 +28,9 @@ const Blog = () => {
     <>
       <Helmet>
         <title>Blog | AI Filmmaker & VFX Artist</title>
-        <meta 
-          name="description" 
-          content="Insights, tutorials, and thoughts on AI filmmaking, visual effects, and the future of creative technology." 
+        <meta
+          name="description"
+          content="Insights, tutorials, and thoughts on AI filmmaking, visual effects, and the future of creative technology."
         />
       </Helmet>
 
@@ -45,7 +47,7 @@ const Blog = () => {
               Thoughts on <span className="text-gradient">AI & Film</span>
             </h1>
             <p className="font-body text-lg text-muted-foreground max-w-2xl">
-              Exploring the intersection of artificial intelligence, visual effects, 
+              Exploring the intersection of artificial intelligence, visual effects,
               and the art of storytelling. Insights from 15+ years in the industry.
             </p>
           </div>
@@ -141,11 +143,10 @@ const Blog = () => {
                         <button
                           key={page}
                           onClick={() => setCurrentPage(page)}
-                          className={`px-4 py-2 rounded-lg font-body text-sm transition-colors ${
-                            currentPage === page
-                              ? 'bg-primary text-primary-foreground'
-                              : 'bg-secondary border border-border hover:border-primary'
-                          }`}
+                          className={`px-4 py-2 rounded-lg font-body text-sm transition-colors ${currentPage === page
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-secondary border border-border hover:border-primary'
+                            }`}
                         >
                           {page}
                         </button>
@@ -176,14 +177,53 @@ const Blog = () => {
               Get the latest insights on AI filmmaking and VFX delivered to your inbox.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              <input 
-                type="email" 
-                placeholder="Enter your email"
-                className="flex-1 px-6 py-3 bg-secondary border border-border rounded-full font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors"
-              />
-              <button className="px-8 py-3 bg-primary text-primary-foreground font-body font-medium rounded-full hover:shadow-[0_0_30px_hsl(38_92%_55%/0.4)] transition-all duration-300">
-                Subscribe
-              </button>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const form = e.target as HTMLFormElement;
+                  const emailInput = form.elements.namedItem('email') as HTMLInputElement;
+                  const email = emailInput.value;
+                  const button = form.querySelector('button');
+
+                  if (!email) {
+                    toast.error('Please enter your email address');
+                    return;
+                  }
+
+                  try {
+                    if (button) {
+                      button.disabled = true;
+                      button.innerHTML = '<span class="animate-spin mr-2">⟳</span> Subscribing...';
+                    }
+
+                    await newsletterService.subscribe({ email, source: 'blog' });
+                    toast.success('Successfully subscribed to the newsletter!');
+                    form.reset();
+                  } catch (error: any) {
+                    toast.error(error.message || 'Failed to subscribe');
+                  } finally {
+                    if (button) {
+                      button.disabled = false;
+                      button.textContent = 'Subscribe';
+                    }
+                  }
+                }}
+                className="flex flex-col sm:flex-row gap-4 w-full"
+              >
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                  className="flex-1 px-6 py-3 bg-secondary border border-border rounded-full font-body text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors disabled:opacity-50"
+                />
+                <button
+                  type="submit"
+                  className="px-8 py-3 bg-primary text-primary-foreground font-body font-medium rounded-full hover:shadow-[0_0_30px_hsl(38_92%_55%/0.4)] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed min-w-[140px]"
+                >
+                  Subscribe
+                </button>
+              </form>
             </div>
           </div>
         </section>

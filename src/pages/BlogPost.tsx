@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import CommentForm from '@/components/CommentForm';
+import CommentsList from '@/components/CommentsList';
 import { Calendar, Clock, ArrowLeft, Tag, Loader2 } from 'lucide-react';
 import { blogService } from '@/services/blogService';
 
@@ -166,6 +168,12 @@ const BlogPost = () => {
                 ))}
               </div>
             )}
+
+            {/* Comments Section */}
+            <div className="mt-16 pt-12 border-t border-border space-y-8">
+              <CommentsList postId={post._id} />
+              <CommentForm postId={post._id} />
+            </div>
           </div>
         </article>
 

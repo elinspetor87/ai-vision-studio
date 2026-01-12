@@ -14,12 +14,12 @@ export const uploadService = {
     const formData = new FormData();
     formData.append('image', file);
 
-    const response = await api.post<UploadResponse>('/api/upload/blog', formData, {
+    const response = await api.post<{ success: boolean; data: UploadResponse }>('/api/upload/blog', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    return response.data;
+    return response.data.data;
   },
 
   // Upload film poster
@@ -27,12 +27,12 @@ export const uploadService = {
     const formData = new FormData();
     formData.append('image', file);
 
-    const response = await api.post<UploadResponse>('/api/upload/film', formData, {
+    const response = await api.post<{ success: boolean; data: UploadResponse }>('/api/upload/film', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    return response.data;
+    return response.data.data;
   },
 
   // Upload video thumbnail
@@ -40,12 +40,12 @@ export const uploadService = {
     const formData = new FormData();
     formData.append('image', file);
 
-    const response = await api.post<UploadResponse>('/api/upload/video', formData, {
+    const response = await api.post<{ success: boolean; data: UploadResponse }>('/api/upload/video', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    return response.data;
+    return response.data.data;
   },
 
   // Upload general image
@@ -53,12 +53,12 @@ export const uploadService = {
     const formData = new FormData();
     formData.append('image', file);
 
-    const response = await api.post<UploadResponse>('/api/upload/image', formData, {
+    const response = await api.post<{ success: boolean; data: UploadResponse }>('/api/upload/image', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    return response.data;
+    return response.data.data;
   },
 
   // Delete image by publicId

@@ -1,9 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { settingsService } from '@/services/settingsService';
 import { Film, Award, Users, Sparkles } from 'lucide-react';
 
 const QuoteShowcaseSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Fetch settings
+  const { data: settings } = useQuery({
+    queryKey: ['settings'],
+    queryFn: () => settingsService.getSettings(),
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -23,10 +31,10 @@ const QuoteShowcaseSection = () => {
   }, []);
 
   const showcases = [
-    { icon: Film, value: '50+', label: 'Projects Completed' },
-    { icon: Award, value: '15', label: 'Years Experience' },
-    { icon: Users, value: '30+', label: 'Happy Clients' },
-    { icon: Sparkles, value: '100K+', label: 'AI Renders' },
+    { icon: Film, value: settings?.showcases.projectsCompleted || '50+', label: 'Projects Completed' },
+    { icon: Award, value: settings?.showcases.yearsExperience || '15', label: 'Years Experience' },
+    { icon: Users, value: settings?.showcases.happyClients || '30+', label: 'Happy Clients' },
+    { icon: Sparkles, value: settings?.showcases.aiRenders || '100K+', label: 'AI Renders' },
   ];
 
   return (
@@ -45,17 +53,25 @@ const QuoteShowcaseSection = () => {
             <div className="relative aspect-[4/5] max-w-md mx-auto">
               {/* Decorative frame */}
               <div className="absolute inset-0 border border-primary/30 rounded-sm translate-x-4 translate-y-4" />
-              
-              {/* Image placeholder - replace with actual image */}
+
+              {/* Image or placeholder */}
               <div className="relative w-full h-full bg-gradient-to-br from-secondary to-background rounded-sm overflow-hidden border border-border">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center text-muted-foreground">
-                    <Film className="w-16 h-16 mx-auto mb-4 text-primary/50" />
-                    <p className="font-body text-sm">Your photo here</p>
+                {settings?.profileImage?.url ? (
+                  <img
+                    src={settings.profileImage.url}
+                    alt={settings.profileImage.alt || 'Profile'}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center text-muted-foreground">
+                      <Film className="w-16 h-16 mx-auto mb-4 text-primary/50" />
+                      <p className="font-body text-sm">Your photo here</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
-              
+
               {/* Accent corner */}
               <div className="absolute -bottom-2 -left-2 w-20 h-20 border-l-2 border-b-2 border-primary" />
             </div>
@@ -67,15 +83,14 @@ const QuoteShowcaseSection = () => {
             <blockquote className="relative">
               <span className="absolute -top-8 -left-4 font-display text-8xl text-primary/20">"</span>
               <p className="font-display text-2xl md:text-3xl lg:text-4xl font-medium leading-relaxed text-foreground">
-                AI will not make better artists, 
-                <span className="text-primary"> artists will make better work with AI.</span>
+                {settings?.quote.mainText || 'AI will not make better artists,'}{' '}
+                <span className="text-primary">{settings?.quote.highlightedText || 'artists will make better work with AI.'}</span>
               </p>
               <span className="absolute -bottom-12 right-0 font-display text-8xl text-primary/20">"</span>
             </blockquote>
 
             <p className="font-body text-muted-foreground leading-relaxed pt-4">
-              Embracing technology as a creative partner, not a replacement. 
-              The future of filmmaking is a collaboration between human vision and artificial intelligence.
+              {settings?.bio || 'Embracing technology as a creative partner, not a replacement. The future of filmmaking is a collaboration between human vision and artificial intelligence.'}
             </p>
 
             {/* Showcases Grid */}

@@ -3,7 +3,6 @@ dotenv.config();
 
 import { connectDB } from '../config/database';
 import User from '../models/User';
-import bcrypt from 'bcrypt';
 
 const seedAdmin = async () => {
   try {
@@ -21,12 +20,10 @@ const seedAdmin = async () => {
     }
 
     // Create admin user
-    const hashedPassword = await bcrypt.hash('admin123', 10);
-
     const admin = await User.create({
       name: 'Admin',
       email: 'admin@example.com',
-      password: hashedPassword,
+      password: 'admin123',
       role: 'admin',
     });
 

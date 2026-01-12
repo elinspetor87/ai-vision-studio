@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { blogService } from '@/services/blogService';
+import { uploadService } from '@/services/uploadService';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
 const BlogForm = () => {
@@ -149,16 +150,26 @@ const BlogForm = () => {
       status: formData.status,
     };
 
-    // Handle image - prioritize URL over file upload
-    if (formData.imageUrl) {
+    // Handle image - prioritize file upload over URL
+    if (imageFile) {
+      try {
+        toast.info('Uploading image...');
+        const uploadResult = await uploadService.uploadBlogImage(imageFile);
+        submitData.image = {
+          url: uploadResult.url,
+          publicId: uploadResult.publicId,
+          alt: formData.imageAlt,
+        };
+      } catch (error: any) {
+        toast.error(error.response?.data?.error || 'Failed to upload image');
+        return;
+      }
+    } else if (formData.imageUrl) {
       submitData.image = {
         url: formData.imageUrl,
         publicId: formData.imageUrl.split('/').pop() || 'external',
         alt: formData.imageAlt,
       };
-    } else if (imageFile) {
-      toast.error('File upload requires Cloudinary configuration. Please use an image URL instead.');
-      return;
     }
 
     if (isEditMode) {
@@ -238,8 +249,13 @@ const BlogForm = () => {
                 onChange={handleImageChange}
                 className="cursor-pointer"
               />
+              {imageFile && (
+                <p className="text-sm text-green-600 dark:text-green-400 mt-2">
+                  ✓ File selected: {imageFile.name}
+                </p>
+              )}
               <p className="text-xs text-muted-foreground mt-2">
-                Note: File upload requires Cloudinary configuration
+                Upload an image from your computer (will be uploaded to Cloudinary)
               </p>
             </div>
           </div>
