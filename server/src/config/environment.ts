@@ -16,7 +16,7 @@ interface Environment {
   CLOUDINARY_API_SECRET?: string;
   EMAIL_USER: string;
   EMAIL_APP_PASSWORD: string;
-  ADMIN_EMAIL: string;
+  ADMIN_EMAIL?: string;
   CLIENT_URL: string;
   ADMIN_URL: string;
   EMAIL_PASSWORD?: string;
@@ -43,7 +43,7 @@ export const env: Environment = {
   CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
   EMAIL_USER: getEnvVar('EMAIL_USER'),
   EMAIL_APP_PASSWORD: getEnvVar('EMAIL_APP_PASSWORD'),
-  ADMIN_EMAIL: getEnvVar('ADMIN_EMAIL'),
+  ADMIN_EMAIL: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
   CLIENT_URL: getEnvVar('CLIENT_URL', 'http://localhost:5173'),
   ADMIN_URL: getEnvVar('ADMIN_URL', 'http://localhost:5174'),
   EMAIL_PASSWORD: process.env.EMAIL_PASSWORD || process.env.EMAIL_APP_PASSWORD,
