@@ -1,3 +1,4 @@
+// Version 1.0.5 - Triggering build for social media and rate limit fixes
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -47,7 +48,7 @@ app.use(cors({
 // Rate limiting
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10), // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100', 10),
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '500', 10), // Aumentado para 500 para evitar 429 em admin
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
