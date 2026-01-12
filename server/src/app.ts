@@ -33,8 +33,11 @@ app.use(cors({
   origin: isDevelopment ? true : [
     env.CLIENT_URL,
     env.ADMIN_URL,
+    'http://localhost:5173',
+    'http://localhost:8080',
     'https://ai-vision-studio.vercel.app',
-    'https://ai-vision-studio-git-main-elinspetor87.vercel.app'
+    'https://www.felipealmeida.studio',
+    'https://felipealmeida.studio'
   ].filter(Boolean),
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
