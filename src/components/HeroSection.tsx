@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
 import { Play, Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { settingsService } from '@/services/settingsService';
 import AnimatedText from './animations/AnimatedText';
 
 const HeroSection = () => {
-  const [isVisible, setIsVisible] = useState(false);
 
   // Fetch settings for hero section
   const { data: settings, isLoading } = useQuery({
@@ -39,16 +37,7 @@ const HeroSection = () => {
     },
   };
 
-  useEffect(() => {
-    if (!isLoading) {
-      // Small delay to ensure render phase is done
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-        console.log('✨ Hero Section Visible. Data:', heroData);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]);
+
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-hero-gradient film-grain">
@@ -62,11 +51,10 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
 
       <div className="relative z-10 container mx-auto px-6 text-center">
-        <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+        <div className="opacity-100">
           {/* Tagline */}
           <p
-            className={`font-body text-sm md:text-base tracking-[0.3em] uppercase text-primary mb-6 ${isVisible ? 'animate-fade-up' : ''
-              }`}
+            className="font-body text-sm md:text-base tracking-[0.3em] uppercase text-primary mb-6"
           >
             {heroData.tagline}
           </p>
@@ -75,54 +63,50 @@ const HeroSection = () => {
           <h1
             className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-tight mb-6"
           >
-            {isVisible && (
-              <>
-                <AnimatedText
-                  text={heroData.line1}
-                  animationType={heroData.animation.animationType}
-                  speed={heroData.animation.speed}
-                  delay={heroData.animation.delay}
-                  typewriterCursor={heroData.animation.typewriterCursor}
-                  glitchIntensity={heroData.animation.glitchIntensity}
-                  lineNumber={0}
-                  className="block"
-                />
-                <AnimatedText
-                  text={heroData.line2}
-                  animationType={heroData.animation.animationType}
-                  speed={heroData.animation.speed}
-                  delay={heroData.animation.delay}
-                  typewriterCursor={heroData.animation.typewriterCursor}
-                  glitchIntensity={heroData.animation.glitchIntensity}
-                  lineNumber={1}
-                  className="block text-gradient"
-                />
-                <AnimatedText
-                  text={heroData.line3}
-                  animationType={heroData.animation.animationType}
-                  speed={heroData.animation.speed}
-                  delay={heroData.animation.delay}
-                  typewriterCursor={heroData.animation.typewriterCursor}
-                  glitchIntensity={heroData.animation.glitchIntensity}
-                  lineNumber={2}
-                  className="block text-foreground/80"
-                />
-              </>
-            )}
+            <>
+              <AnimatedText
+                text={heroData.line1}
+                animationType={heroData.animation.animationType}
+                speed={heroData.animation.speed}
+                delay={heroData.animation.delay}
+                typewriterCursor={heroData.animation.typewriterCursor}
+                glitchIntensity={heroData.animation.glitchIntensity}
+                lineNumber={0}
+                className="block"
+              />
+              <AnimatedText
+                text={heroData.line2}
+                animationType={heroData.animation.animationType}
+                speed={heroData.animation.speed}
+                delay={heroData.animation.delay}
+                typewriterCursor={heroData.animation.typewriterCursor}
+                glitchIntensity={heroData.animation.glitchIntensity}
+                lineNumber={1}
+                className="block text-gradient"
+              />
+              <AnimatedText
+                text={heroData.line3}
+                animationType={heroData.animation.animationType}
+                speed={heroData.animation.speed}
+                delay={heroData.animation.delay}
+                typewriterCursor={heroData.animation.typewriterCursor}
+                glitchIntensity={heroData.animation.glitchIntensity}
+                lineNumber={2}
+                className="block text-foreground/80"
+              />
+            </>
           </h1>
 
           {/* Description */}
           <p
-            className={`font-body text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 ${isVisible ? 'animate-fade-up delay-400' : ''
-              }`}
+            className="font-body text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12"
           >
             {heroData.description}
           </p>
 
           {/* CTA Buttons */}
           <div
-            className={`flex flex-col sm:flex-row gap-4 justify-center ${isVisible ? 'animate-fade-up delay-500' : ''
-              }`}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <a
               href="#work"
