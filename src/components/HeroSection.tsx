@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Play } from 'lucide-react';
+import { Play, Loader2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { settingsService } from '@/services/settingsService';
 import AnimatedText from './animations/AnimatedText';
@@ -8,11 +8,19 @@ const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   // Fetch settings for hero section
-  const { data: settings } = useQuery({
+  const { data: settings, isLoading } = useQuery({
     queryKey: ['settings'],
     queryFn: () => settingsService.getSettings(),
     staleTime: 10000,
   });
+
+  if (isLoading) {
+    return (
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-hero-gradient film-grain">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </section>
+    );
+  }
 
   // Default values if settings not loaded
   const heroData = settings?.heroSection || {
