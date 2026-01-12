@@ -16,8 +16,9 @@ const HeroSection = () => {
 
   if (isLoading) {
     return (
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-hero-gradient film-grain">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <section className="relative min-h-screen flex flex-col gap-4 items-center justify-center overflow-hidden bg-background">
+        <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        <p className="text-muted-foreground animate-pulse">Loading experience...</p>
       </section>
     );
   }
