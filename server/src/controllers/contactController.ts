@@ -27,26 +27,29 @@ export const submitContactForm = asyncHandler(
       status: 'pending',
     });
 
-    // Send emails asynchronously (don't wait for them to complete)
-    Promise.all([
-      sendContactNotificationToAdmin({
-        name,
-        email,
-        date,
-        time,
-        message,
-      }),
-      sendContactConfirmationToUser({
-        name,
-        email,
-        date,
-        time,
-        message,
-      }),
-    ]).catch((error) => {
-      console.error('❌ Error sending emails:', error);
-      // Don't fail the request if email fails
-    });
+    // Send emails (wait for them to ensure errors aren't silent)
+    try {
+      await Promise.all([
+        sendContactNotificationToAdmin({
+          name,
+          email,
+          date,
+          time,
+          message,
+        }),
+        sendContactConfirmationToUser({
+          name,
+          email,
+          date,
+          time,
+          message,
+        }),
+      ]);
+      console.log(`✅ Emails sent successfully for submission ${submission._id}`);
+    } catch (error) {
+      console.error('❌ Error sending emails (request continued):', error);
+      // We don't throw to avoid failing the submission, but we now know it failed
+    }
 
     res.status(201).json({
       success: true,

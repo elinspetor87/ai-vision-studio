@@ -82,12 +82,19 @@ export const sendContactNotificationToAdmin = async (
   let adminEmail = env.ADMIN_EMAIL;
   try {
     const settings = await Settings.findOne();
-    if (settings && settings.contactEmail) {
+    if (settings && settings.contactEmail && settings.contactEmail !== 'hello@aifilmmaker.com') {
       adminEmail = settings.contactEmail;
       console.log(`📧 Using database configured admin email: ${adminEmail}`);
+    } else {
+      console.log(`📧 Using environment admin email (DB was placeholder or empty): ${adminEmail}`);
     }
   } catch (error) {
     console.warn('⚠️ Could not fetch recipient email from DB settings, using env fallback');
+  }
+
+  if (!adminEmail) {
+    console.error('❌ CRITICAL: No admin recipient email found (DB or Env)');
+    throw new Error('No recipient email configured');
   }
 
   const mailOptions = {
