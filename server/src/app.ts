@@ -30,7 +30,12 @@ app.use(helmet());
 
 // CORS configuration
 app.use(cors({
-  origin: isDevelopment ? true : [env.CLIENT_URL, env.ADMIN_URL],
+  origin: isDevelopment ? true : [
+    env.CLIENT_URL,
+    env.ADMIN_URL,
+    'https://ai-vision-studio.vercel.app',
+    'https://ai-vision-studio-git-main-elinspetor87.vercel.app'
+  ].filter(Boolean),
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
