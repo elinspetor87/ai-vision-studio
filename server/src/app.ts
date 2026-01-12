@@ -43,7 +43,9 @@ app.use(cors({
     // allow requests with no origin (like mobile apps or curl requests)
     if (!origin || isDevelopment) return callback(null, true);
 
-    if (Array.isArray(allowedOrigins) && allowedOrigins.indexOf(origin) !== -1) {
+    // Normalize origin by removing trailing slash for comparison
+    const normalizedOrigin = origin.replace(/\/$/, "");
+    if (Array.isArray(allowedOrigins) && allowedOrigins.some(o => typeof o === 'string' && o.replace(/\/$/, "") === normalizedOrigin)) {
       return callback(null, true);
     } else {
       console.warn(`⚠️ CORS blocked for origin: ${origin}`);
