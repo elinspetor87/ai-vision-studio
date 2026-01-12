@@ -40,12 +40,21 @@ const allowedOrigins = isDevelopment ? true : [
 
 app.use(cors({
   origin: (origin, callback) => {
-    // allow requests with no origin (like mobile apps or curl requests)
+    // 1. Allow development or no-origin (mobile/curl)
     if (!origin || isDevelopment) return callback(null, true);
 
-    // Normalize origin by removing trailing slash for comparison
-    const normalizedOrigin = origin.replace(/\/$/, "");
-    if (Array.isArray(allowedOrigins) && allowedOrigins.some(o => typeof o === 'string' && o.replace(/\/$/, "") === normalizedOrigin)) {
+    // 2. Normalize origin
+    const normalizedOrigin = origin.toLowerCase().trim();
+
+    // 3. Robust check: If it contains your canonical domains, allow it
+    const isAuthorized =
+      normalizedOrigin.includes('felipealmeida.studio') ||
+      normalizedOrigin.includes('ai-vision-studio.vercel.app') ||
+      (Array.isArray(allowedOrigins) && allowedOrigins.some(o =>
+        typeof o === 'string' && o.toLowerCase().includes(normalizedOrigin.replace('https://', '').replace('http://', ''))
+      ));
+
+    if (isAuthorized) {
       return callback(null, true);
     } else {
       console.warn(`⚠️ CORS blocked for origin: ${origin}`);
@@ -54,7 +63,7 @@ app.use(cors({
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key', 'Cache-Control'],
 }));
 
 // Rate limiting
