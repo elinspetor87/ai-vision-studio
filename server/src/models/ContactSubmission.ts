@@ -31,11 +31,11 @@ const contactSubmissionSchema = new Schema<IContactSubmission>(
     },
     date: {
       type: Date,
-      required: [true, 'Date is required'],
+      required: false,
     },
     time: {
       type: String,
-      required: [true, 'Time is required'],
+      required: false,
     },
     message: {
       type: String,

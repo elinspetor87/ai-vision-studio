@@ -17,6 +17,7 @@ import IndexDebugV3 from "./pages/IndexDebugV3";
 import TestMinimal from "./pages/TestMinimal";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import GetInTouch from "./pages/GetInTouch";
 import NotFound from "./pages/NotFound";
 
 // Admin pages
@@ -61,6 +62,8 @@ const AppContent = () => {
       <Route path="/test-debug-v3" element={<IndexDebugV3 />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
+      <Route path="/contact" element={<GetInTouch />} />
+      <Route path="/get-in-touch" element={<GetInTouch />} />
 
       {/* Admin routes */}
       <Route path="/admin/test" element={<Test />} />

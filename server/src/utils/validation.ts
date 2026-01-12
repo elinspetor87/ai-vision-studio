@@ -119,8 +119,8 @@ export const updateProjectSchema = createProjectSchema.deepPartial();
 export const contactSubmissionSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
-  date: z.string().or(z.date()),
-  time: z.string().min(1, 'Time is required'),
+  date: z.string().or(z.date()).optional(),
+  time: z.string().min(1, 'Time is required').optional(),
   message: z.string().max(1000).optional().or(z.literal('')),
 });
 

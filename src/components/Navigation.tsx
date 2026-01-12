@@ -31,14 +31,14 @@ const Navigation = () => {
     { href: '#work', label: 'Work' },
     { href: '#gallery', label: 'Gallery' },
     { href: '/blog', label: 'Blog', isRoute: true },
-    { href: '#schedule', label: 'Contact' },
+    { href: '/contact', label: 'Contact', isRoute: true },
   ];
 
   const isHomePage = location.pathname === '/';
 
   const handleNavClick = (href: string, isRoute?: boolean) => {
     if (isRoute) return; // Let Link handle it
-    
+
     if (!isHomePage && href.startsWith('#')) {
       // Navigate to home page with hash
       window.location.href = '/' + href;
@@ -47,9 +47,8 @@ const Navigation = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? 'bg-background/90 backdrop-blur-md border-b border-border' : 'bg-transparent'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-background/90 backdrop-blur-md border-b border-border' : 'bg-transparent'
+        }`}
     >
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">

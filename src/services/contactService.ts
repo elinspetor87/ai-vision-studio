@@ -4,8 +4,8 @@ import { ContactSubmission } from '../types';
 export interface ContactFormData {
   name: string;
   email: string;
-  date: string;
-  time: string;
+  date?: string;
+  time?: string;
   message: string;
 }
 

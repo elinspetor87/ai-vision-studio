@@ -4,7 +4,7 @@ import axios from 'axios';
 // Em produção, usa a URL completa
 const API_BASE_URL = import.meta.env.MODE === 'development'
   ? '' // URL relativa - vai usar o proxy do Vite
-  : 'https://ai-vision-studioai-vision-studio-backend.onrender.com';
+  : 'https://ai-vision-studioai-vision-studio-backend.onrender.com'; // Removido / final para evitar //api/ redirecionamentos
 
 export const api = axios.create({
   baseURL: API_BASE_URL,

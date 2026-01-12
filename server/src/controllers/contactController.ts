@@ -55,8 +55,8 @@ export const submitContactForm = asyncHandler(
         id: submission._id,
         name: submission.name,
         email: submission.email,
-        date: submission.date,
-        time: submission.time,
+        date: submission.date || null,
+        time: submission.time || null,
       },
     });
   }
