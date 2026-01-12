@@ -17,7 +17,7 @@ export interface BlogPost {
     name: string;
     email: string;
   };
-  viewCount: number;
+  views: number;
   publishedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
