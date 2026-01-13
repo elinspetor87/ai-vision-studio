@@ -4,8 +4,8 @@ import { Input } from '@/components/ui/input';
 import axios from 'axios';
 
 const LoginDebugV2 = () => {
-  const [email, setEmail] = useState('admin@example.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [result, setResult] = useState<any>(null);
 
   const testLogin = async () => {
@@ -86,8 +86,7 @@ const LoginDebugV2 = () => {
         <div className="bg-card border border-border rounded-2xl p-8">
           <h2 className="font-semibold mb-2">Instructions:</h2>
           <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
-            <li>Make sure email is: <code className="bg-secondary px-1">admin@example.com</code></li>
-            <li>Make sure password is: <code className="bg-secondary px-1">admin123</code></li>
+            <li>Enter your admin credentials</li>
             <li>Click "Test Direct Login"</li>
             <li>If this works, the issue is with the proxy or frontend auth flow</li>
             <li>If this fails, check the browser console for details</li>

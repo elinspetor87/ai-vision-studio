@@ -5,8 +5,8 @@ import axios from 'axios';
 import api from '@/config/api';
 
 const LoginDebugV3 = () => {
-  const [email, setEmail] = useState('admin@example.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [result, setResult] = useState<any>(null);
 
   const testProxyLogin = async () => {

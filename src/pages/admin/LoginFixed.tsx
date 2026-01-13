@@ -107,11 +107,6 @@ const LoginFixed = () => {
             </Button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-border">
-            <p className="font-body text-xs text-center text-muted-foreground">
-              Default credentials: admin@example.com / admin123
-            </p>
-          </div>
         </div>
       </div>
     </div>
