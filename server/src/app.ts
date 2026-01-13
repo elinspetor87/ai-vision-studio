@@ -29,6 +29,9 @@ const app: Application = express();
 // Security middleware
 app.use(helmet());
 
+// Trust proxy (for Nginx)
+app.set('trust proxy', 1);
+
 // CORS configuration
 const allowedOrigins = isDevelopment ? true : [
   env.CLIENT_URL,
@@ -46,10 +49,10 @@ app.use(cors({
     // 2. Normalize origin
     const normalizedOrigin = origin.toLowerCase().trim();
 
-    // 3. Robust check: If it contains your canonical domains, allow it
+    // 3. Allow all Vercel preview URLs and main domains
     const isAuthorized =
       normalizedOrigin.includes('felipealmeida.studio') ||
-      normalizedOrigin.includes('ai-vision-studio.vercel.app') ||
+      normalizedOrigin.includes('vercel.app') ||  // Allow all Vercel preview URLs
       (Array.isArray(allowedOrigins) && allowedOrigins.some(o =>
         typeof o === 'string' && o.toLowerCase().includes(normalizedOrigin.replace('https://', '').replace('http://', ''))
       ));
