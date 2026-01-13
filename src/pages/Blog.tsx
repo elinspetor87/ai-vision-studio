@@ -200,7 +200,8 @@ const Blog = () => {
                     toast.success('Successfully subscribed to the newsletter!');
                     form.reset();
                   } catch (error: any) {
-                    toast.error(error.message || 'Failed to subscribe');
+                    const errorMsg = error.response?.data?.message || error.message || 'Failed to subscribe';
+                    toast.error(errorMsg);
                   } finally {
                     if (button) {
                       button.disabled = false;
