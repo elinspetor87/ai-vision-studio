@@ -21,32 +21,7 @@ import { format } from 'date-fns';
 import { toast } from 'sonner';
 import axios from 'axios';
 
-// We'll define the service here temporarily or move it to services folder
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-const API_URL = `${BASE_URL}/api`;
-
-const getSubscribers = async (page = 1, limit = 50, active?: boolean) => {
-    const params: any = { page, limit };
-    if (active !== undefined) params.active = active;
-
-    const response = await axios.get(`${API_URL}/newsletter/subscribers`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        params
-    });
-    return response.data;
-};
-
-const getStats = async () => {
-    const response = await axios.get(`${API_URL}/newsletter/count`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    });
-    return response.data;
-};
-
-const unsubscribeUser = async (email: string) => {
-    const response = await axios.post(`${API_URL}/newsletter/unsubscribe`, { email });
-    return response.data;
-};
+import { newsletterService } from '@/services/newsletterService';
 
 const NewsletterManagement = () => {
     const queryClient = useQueryClient();
@@ -55,16 +30,16 @@ const NewsletterManagement = () => {
 
     const { data, isLoading } = useQuery({
         queryKey: ['subscribers', page, filterActive],
-        queryFn: () => getSubscribers(page, 50, filterActive),
+        queryFn: () => newsletterService.getAllSubscribers(page, 50, filterActive),
     });
 
     const { data: stats } = useQuery({
         queryKey: ['newsletter-stats'],
-        queryFn: getStats,
+        queryFn: () => newsletterService.getStats(),
     });
 
     const unsubscribeMutation = useMutation({
-        mutationFn: unsubscribeUser,
+        mutationFn: (email: string) => newsletterService.unsubscribe(email),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['subscribers'] });
             queryClient.invalidateQueries({ queryKey: ['newsletter-stats'] });

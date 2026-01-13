@@ -14,5 +14,17 @@ export const newsletterService = {
     unsubscribe: async (email: string) => {
         const response = await api.post('/api/newsletter/unsubscribe', { email });
         return response.data;
+    },
+
+    getAllSubscribers: async (page = 1, limit = 50, active?: boolean) => {
+        const response = await api.get('/api/newsletter/subscribers', {
+            params: { page, limit, active }
+        });
+        return response.data;
+    },
+
+    getStats: async () => {
+        const response = await api.get('/api/newsletter/count');
+        return response.data;
     }
 };

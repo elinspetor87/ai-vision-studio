@@ -26,6 +26,12 @@ import newsletterRoutes from './routes/newsletter';
 
 const app: Application = express();
 
+// Request logger
+app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log(`📡 ${new Date().toISOString()} | ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 // Security middleware
 app.use(helmet());
 

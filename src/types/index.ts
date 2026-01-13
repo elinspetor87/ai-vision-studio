@@ -67,6 +67,7 @@ export interface VideoProject {
   videoUrl: string;
   order: number;
   featured: boolean;
+  status?: 'active' | 'archived';
   createdAt: Date;
   updatedAt: Date;
 }

@@ -36,7 +36,7 @@ const VideoForm = () => {
   // Fetch video data if editing
   const { data: videoData } = useQuery({
     queryKey: ['video', id],
-    queryFn: () => videoService.getVideoBySlug(id!),
+    queryFn: () => videoService.getVideoById(id!),
     enabled: isEditMode,
   });
 
