@@ -346,6 +346,8 @@ const SettingsManagement = () => {
     };
 
     console.log('💾 Submitting settings:', submitData);
+    console.log('📋 FormData favicon before submit:', formData.faviconUrl);
+    console.log('📋 FormData logo before submit:', formData.logoUrl);
 
     updateMutation.mutate(submitData);
   };
