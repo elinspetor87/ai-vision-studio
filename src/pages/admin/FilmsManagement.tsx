@@ -1,15 +1,36 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { filmService } from '@/services/filmService';
 import { Loader2, Plus, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const FilmsManagement = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const { data: films, isLoading } = useQuery({
     queryKey: ['films-admin'],
     queryFn: () => filmService.getAllFilms('all'),
   });
+
+  // Delete film mutation
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => filmService.deleteFilm(id),
+    onSuccess: () => {
+      toast.success('Film deleted successfully');
+      queryClient.invalidateQueries({ queryKey: ['films-admin'] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || 'Failed to delete film');
+    },
+  });
+
+  const handleDelete = (id: string) => {
+    if (confirm('Are you sure you want to delete this film?')) {
+      deleteMutation.mutate(id);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -63,8 +84,18 @@ const FilmsManagement = () => {
                   >
                     <Edit className="w-4 h-4" />
                   </Button>
-                  <Button size="icon" variant="secondary" className="text-red-500">
-                    <Trash2 className="w-4 h-4" />
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    className="text-red-500"
+                    onClick={() => handleDelete(film._id)}
+                    disabled={deleteMutation.isPending}
+                  >
+                    {deleteMutation.isPending ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="w-4 h-4" />
+                    )}
                   </Button>
                 </div>
               </div>
@@ -80,11 +111,10 @@ const FilmsManagement = () => {
                       ⭐ {film.rating}
                     </span>
                   )}
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    film.status === 'active'
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${film.status === 'active'
                       ? 'bg-green-500/20 text-green-600 dark:text-green-400'
                       : 'bg-gray-500/20 text-gray-600 dark:text-gray-400'
-                  }`}>
+                    }`}>
                     {film.status === 'active' ? '✓ Published' : '✗ Archived'}
                   </span>
                 </div>
