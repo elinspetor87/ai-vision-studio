@@ -65,7 +65,7 @@ const GetInTouch = () => {
                                             </div>
                                             <div>
                                                 <p className="text-xs font-semibold uppercase tracking-wider">Email</p>
-                                                <p className="font-body">contact@felipealmeida.studio</p>
+                                                <p className="font-body">getintouch@felipealmeida.com</p>
                                             </div>
                                         </div>
                                     </div>
