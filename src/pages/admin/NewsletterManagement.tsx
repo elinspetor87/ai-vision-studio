@@ -50,6 +50,24 @@ const NewsletterManagement = () => {
         },
     });
 
+    const deleteMutation = useMutation({
+        mutationFn: (id: string) => newsletterService.deleteSubscriber(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['subscribers'] });
+            queryClient.invalidateQueries({ queryKey: ['newsletter-stats'] });
+            toast.success('Subscriber permanently deleted');
+        },
+        onError: (error: any) => {
+            toast.error(error.message || 'Failed to delete subscriber');
+        },
+    });
+
+    const handleDelete = (id: string) => {
+        if (window.confirm('Are you sure you want to permanently delete this subscriber? This action cannot be undone.')) {
+            deleteMutation.mutate(id);
+        }
+    };
+
     const handleExport = () => {
         if (!data?.data) return;
 
@@ -182,13 +200,20 @@ const NewsletterManagement = () => {
                                             <DropdownMenuContent align="end">
                                                 {subscriber.isActive && (
                                                     <DropdownMenuItem
-                                                        className="text-red-500"
+                                                        className="text-orange-500"
                                                         onClick={() => unsubscribeMutation.mutate(subscriber.email)}
                                                     >
-                                                        <Trash2 className="w-4 h-4 mr-2" />
+                                                        <XCircle className="w-4 h-4 mr-2" />
                                                         Unsubscribe
                                                     </DropdownMenuItem>
                                                 )}
+                                                <DropdownMenuItem
+                                                    className="text-red-500"
+                                                    onClick={() => handleDelete(subscriber._id)}
+                                                >
+                                                    <Trash2 className="w-4 h-4 mr-2" />
+                                                    Permanently Delete
+                                                </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>

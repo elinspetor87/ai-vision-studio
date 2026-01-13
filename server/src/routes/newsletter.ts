@@ -11,5 +11,6 @@ router.post('/unsubscribe', newsletterController.unsubscribe);
 // Admin routes (require authentication)
 router.get('/subscribers', authenticate, newsletterController.getAllSubscribers);
 router.get('/count', authenticate, newsletterController.getCount);
+router.delete('/subscribers/:id', authenticate, newsletterController.deleteSubscriber);
 
 export default router;

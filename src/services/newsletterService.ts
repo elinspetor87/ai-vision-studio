@@ -26,5 +26,10 @@ export const newsletterService = {
     getStats: async () => {
         const response = await api.get('/api/newsletter/count');
         return response.data;
+    },
+
+    deleteSubscriber: async (id: string) => {
+        const response = await api.delete(`/api/newsletter/subscribers/${id}`);
+        return response.data;
     }
 };

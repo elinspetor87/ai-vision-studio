@@ -184,5 +184,32 @@ export const newsletterController = {
                 message: 'Failed to fetch subscriber count'
             });
         }
+    },
+
+    // Delete subscriber (admin only)
+    deleteSubscriber: async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params;
+
+            const subscriber = await Newsletter.findByIdAndDelete(id);
+
+            if (!subscriber) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Subscriber not found'
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: 'Subscriber permanently deleted'
+            });
+        } catch (error) {
+            console.error('Delete subscriber error:', error);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to delete subscriber'
+            });
+        }
     }
 };
