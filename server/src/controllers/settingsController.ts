@@ -35,16 +35,18 @@ export const updateSettings = asyncHandler(
       settings = await Settings.create(updateData);
     } else {
       console.log('📝 Updating existing settings');
-      // Update existing
-      settings = await Settings.findOneAndUpdate({}, updateData, {
-        new: true,
-        runValidators: true,
+      // Merge update to preserve existing fields
+      Object.keys(updateData).forEach(key => {
+        (settings as any)[key] = updateData[key];
       });
+      await settings.save();
     }
 
     console.log('✅ Settings saved:', {
       logoText: settings?.logoText,
       contactEmail: settings?.contactEmail,
+      logoUrl: settings?.logo?.url,
+      faviconUrl: settings?.favicon?.url,
     });
 
     res.status(200).json({
