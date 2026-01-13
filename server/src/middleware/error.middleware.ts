@@ -65,14 +65,14 @@ export const errorHandler = (
     message = 'Token expired';
   }
 
-  // Log error in development
-  if (isDevelopment) {
-    console.error('❌ Error:', {
-      name: err.name,
-      message: err.message,
-      stack: err.stack,
-    });
-  }
+  // Log error for server-side diagnostics
+  console.error('❌ Error handled by middleware:', {
+    name: err.name,
+    message: err.message,
+    path: req.originalUrl,
+    method: req.method,
+    ...(isDevelopment && { stack: err.stack }),
+  });
 
   // Send error response
   res.status(statusCode).json({

@@ -9,20 +9,26 @@ export const uploadBlogImage = asyncHandler(
       throw new AppError('No image file provided', 400);
     }
 
-    // Upload to Cloudinary
-    const result = await uploadToCloudinary(req.file.buffer, 'blog');
+    try {
+      // Upload to Cloudinary
+      const result = await uploadToCloudinary(req.file.buffer, 'blog');
+      console.log('✅ Blog image uploaded:', result.public_id);
 
-    res.status(200).json({
-      success: true,
-      message: 'Image uploaded successfully',
-      data: {
-        url: result.secure_url,
-        publicId: result.public_id,
-        width: result.width,
-        height: result.height,
-        format: result.format,
-      },
-    });
+      res.status(200).json({
+        success: true,
+        message: 'Image uploaded successfully',
+        data: {
+          url: result.secure_url,
+          publicId: result.public_id,
+          width: result.width,
+          height: result.height,
+          format: result.format,
+        },
+      });
+    } catch (error) {
+      console.error('❌ Blog image upload failed:', error);
+      throw error;
+    }
   }
 );
 
@@ -33,20 +39,26 @@ export const uploadFilmPoster = asyncHandler(
       throw new AppError('No image file provided', 400);
     }
 
-    // Upload to Cloudinary
-    const result = await uploadToCloudinary(req.file.buffer, 'posters');
+    try {
+      // Upload to Cloudinary
+      const result = await uploadToCloudinary(req.file.buffer, 'posters');
+      console.log('✅ Film poster uploaded:', result.public_id);
 
-    res.status(200).json({
-      success: true,
-      message: 'Poster uploaded successfully',
-      data: {
-        url: result.secure_url,
-        publicId: result.public_id,
-        width: result.width,
-        height: result.height,
-        format: result.format,
-      },
-    });
+      res.status(200).json({
+        success: true,
+        message: 'Poster uploaded successfully',
+        data: {
+          url: result.secure_url,
+          publicId: result.public_id,
+          width: result.width,
+          height: result.height,
+          format: result.format,
+        },
+      });
+    } catch (error) {
+      console.error('❌ Film poster upload failed:', error);
+      throw error;
+    }
   }
 );
 
@@ -57,20 +69,26 @@ export const uploadVideoThumbnail = asyncHandler(
       throw new AppError('No image file provided', 400);
     }
 
-    // Upload to Cloudinary
-    const result = await uploadToCloudinary(req.file.buffer, 'thumbnails');
+    try {
+      // Upload to Cloudinary
+      const result = await uploadToCloudinary(req.file.buffer, 'thumbnails');
+      console.log('✅ Video thumbnail uploaded:', result.public_id);
 
-    res.status(200).json({
-      success: true,
-      message: 'Thumbnail uploaded successfully',
-      data: {
-        url: result.secure_url,
-        publicId: result.public_id,
-        width: result.width,
-        height: result.height,
-        format: result.format,
-      },
-    });
+      res.status(200).json({
+        success: true,
+        message: 'Thumbnail uploaded successfully',
+        data: {
+          url: result.secure_url,
+          publicId: result.public_id,
+          width: result.width,
+          height: result.height,
+          format: result.format,
+        },
+      });
+    } catch (error) {
+      console.error('❌ Video thumbnail upload failed:', error);
+      throw error;
+    }
   }
 );
 

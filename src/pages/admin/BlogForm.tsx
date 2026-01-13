@@ -161,7 +161,8 @@ const BlogForm = () => {
           alt: formData.imageAlt,
         };
       } catch (error: any) {
-        toast.error(error.response?.data?.error || 'Failed to upload image');
+        const errorMsg = error.response?.data?.error || error.response?.data?.message || 'Failed to upload image';
+        toast.error(`Upload error: ${errorMsg}`);
         return;
       }
     } else if (formData.imageUrl) {
