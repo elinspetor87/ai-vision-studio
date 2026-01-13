@@ -161,7 +161,8 @@ const SettingsManagement = () => {
       console.log('Saving settings:', data);
       return settingsService.updateSettings(data);
     },
-    onSuccess: async () => {
+    onSuccess: async (response) => {
+      console.log('✅ Save successful, response:', response);
       toast.success('Settings updated successfully!');
 
       // Clear files after successful save
@@ -169,12 +170,10 @@ const SettingsManagement = () => {
       setLogoFile(null);
       setFaviconFile(null);
 
-      // Aggressively clear ALL cache and refetch
-      await queryClient.resetQueries({ queryKey: ['settings'] });
+      // Invalidate cache to refetch latest data
       await queryClient.invalidateQueries({ queryKey: ['settings'] });
-      await queryClient.refetchQueries({ queryKey: ['settings'], type: 'active' });
 
-      toast.success('Settings refreshed! Check the homepage footer.');
+      toast.success('Settings saved! Refreshing...');
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || 'Failed to update settings');
@@ -285,6 +284,7 @@ const SettingsManagement = () => {
         return;
       }
     } else if (formData.logoUrl) {
+      console.log('📝 Using logo URL from form:', formData.logoUrl);
       submitData.logo = {
         url: formData.logoUrl,
         publicId: formData.logoUrl.split('/').pop() || 'external',
@@ -309,6 +309,7 @@ const SettingsManagement = () => {
         return;
       }
     } else if (formData.faviconUrl) {
+      console.log('📝 Using favicon URL from form:', formData.faviconUrl);
       submitData.favicon = {
         url: formData.faviconUrl,
         publicId: formData.faviconUrl.split('/').pop() || 'external',
