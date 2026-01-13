@@ -78,8 +78,10 @@ export const sendContactNotificationToAdmin = async (
 
   const displayTime = submission.time || 'Not specified';
 
-  // Try to get recipient email from DB settings
+  // Get recipient email and from email from DB settings
   let adminEmail = env.ADMIN_EMAIL;
+  let fromEmail = env.EMAIL_USER;
+
   try {
     const settings = await Settings.findOne();
     if (settings && settings.contactEmail && settings.contactEmail !== 'hello@aifilmmaker.com') {
@@ -88,8 +90,14 @@ export const sendContactNotificationToAdmin = async (
     } else {
       console.log(`📧 Using environment admin email (DB was placeholder or empty): ${adminEmail}`);
     }
+
+    // Use fromEmail from database if available
+    if (settings && settings.emailSettings && settings.emailSettings.fromEmail) {
+      fromEmail = settings.emailSettings.fromEmail;
+      console.log(`📧 Using database configured from email: ${fromEmail}`);
+    }
   } catch (error) {
-    console.warn('⚠️ Could not fetch recipient email from DB settings, using env fallback');
+    console.warn('⚠️ Could not fetch email settings from DB, using env fallback');
   }
 
   if (!adminEmail) {
@@ -98,7 +106,7 @@ export const sendContactNotificationToAdmin = async (
   }
 
   const mailOptions = {
-    from: env.EMAIL_USER,
+    from: fromEmail,
     to: adminEmail,
     subject: `🎬 New Meeting Request from ${submission.name}`,
     html: `
@@ -181,8 +189,19 @@ export const sendContactConfirmationToUser = async (
 
   const displayTime = submission.time || null;
 
+  // Get from email from DB settings
+  let fromEmail = env.EMAIL_USER;
+  try {
+    const settings = await Settings.findOne();
+    if (settings && settings.emailSettings && settings.emailSettings.fromEmail) {
+      fromEmail = settings.emailSettings.fromEmail;
+    }
+  } catch (error) {
+    // Use env fallback
+  }
+
   const mailOptions = {
-    from: env.EMAIL_USER,
+    from: fromEmail,
     to: submission.email,
     subject: '✅ Meeting Request Confirmed - AI Vision Studio',
     html: `
