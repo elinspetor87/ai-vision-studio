@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 
 const Messages = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
   const { data: messages, isLoading } = useQuery({
@@ -41,9 +42,13 @@ const Messages = () => {
       queryClient.invalidateQueries({ queryKey: ['contact-submissions'] });
       queryClient.invalidateQueries({ queryKey: ['contact-stats'] });
       toast.success('Message deleted successfully');
+      setDeletingId(null);
     },
-    onError: () => {
-      toast.error('Failed to delete message');
+    onError: (error: any) => {
+      console.error('Delete error:', error);
+      const errorMsg = error.response?.data?.message || 'Failed to delete message';
+      toast.error(errorMsg);
+      setDeletingId(null);
     },
   });
 
@@ -53,12 +58,7 @@ const Messages = () => {
 
   const handleDelete = (id: string) => {
     console.log('🗑️ Delete clicked for message ID:', id);
-    if (window.confirm('Are you sure you want to delete this message?')) {
-      console.log('✅ Delete confirmed, calling mutation...');
-      deleteMutation.mutate(id);
-    } else {
-      console.log('❌ Delete cancelled by user');
-    }
+    setDeletingId(id);
   };
 
   return (
@@ -109,12 +109,12 @@ const Messages = () => {
                       </h3>
                       <span
                         className={`px-2.5 py-0.5 rounded-full text-xs font-body font-medium ${message.status === 'pending'
-                            ? 'bg-yellow-500/20 text-yellow-500'
-                            : message.status === 'contacted'
-                              ? 'bg-blue-500/20 text-blue-500'
-                              : message.status === 'completed'
-                                ? 'bg-green-500/20 text-green-500'
-                                : 'bg-red-500/20 text-red-500'
+                          ? 'bg-yellow-500/20 text-yellow-500'
+                          : message.status === 'contacted'
+                            ? 'bg-blue-500/20 text-blue-500'
+                            : message.status === 'completed'
+                              ? 'bg-green-500/20 text-green-500'
+                              : 'bg-red-500/20 text-red-500'
                           }`}
                       >
                         {message.status}
@@ -154,31 +154,59 @@ const Messages = () => {
                   </div>
 
                   <div className="flex items-start gap-2">
-                    <Select
-                      value={message.status}
-                      onValueChange={(value) => handleStatusChange(message._id, value)}
-                      disabled={updateStatusMutation.isPending}
-                    >
-                      <SelectTrigger className="w-[140px]">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="contacted">Contacted</SelectItem>
-                        <SelectItem value="completed">Completed</SelectItem>
-                        <SelectItem value="cancelled">Cancelled</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    {deletingId === message._id ? (
+                      <div className="flex items-center gap-2 bg-red-500/10 p-1 rounded-lg border border-red-500/20">
+                        <span className="text-xs font-medium text-red-500 px-2">Delete?</span>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => deleteMutation.mutate(message._id)}
+                          disabled={deleteMutation.isPending}
+                        >
+                          {deleteMutation.isPending ? (
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                          ) : (
+                            'Yes'
+                          )}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => setDeletingId(null)}
+                          disabled={deleteMutation.isPending}
+                        >
+                          No
+                        </Button>
+                      </div>
+                    ) : (
+                      <>
+                        <Select
+                          value={message.status}
+                          onValueChange={(value) => handleStatusChange(message._id, value)}
+                          disabled={updateStatusMutation.isPending}
+                        >
+                          <SelectTrigger className="w-[140px]">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="pending">Pending</SelectItem>
+                            <SelectItem value="contacted">Contacted</SelectItem>
+                            <SelectItem value="completed">Completed</SelectItem>
+                            <SelectItem value="cancelled">Cancelled</SelectItem>
+                          </SelectContent>
+                        </Select>
 
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDelete(message._id)}
-                      disabled={deleteMutation.isPending}
-                      className="text-red-500 hover:text-red-600 hover:bg-red-500/10"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleDelete(message._id)}
+                          disabled={deleteMutation.isPending}
+                          className="text-red-500 hover:text-red-600 hover:bg-red-500/10"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

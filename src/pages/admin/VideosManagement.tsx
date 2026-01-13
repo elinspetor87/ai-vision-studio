@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { videoService } from '@/services/videoService';
@@ -8,6 +9,7 @@ import { toast } from 'sonner';
 const VideosManagement = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const { data: videos, isLoading } = useQuery({
     queryKey: ['videos-admin'],
@@ -20,16 +22,19 @@ const VideosManagement = () => {
     onSuccess: () => {
       toast.success('Video deleted successfully');
       queryClient.invalidateQueries({ queryKey: ['videos-admin'] });
+      setDeletingId(null);
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Failed to delete video');
+      console.error('Delete error:', error);
+      const errorMsg = error.response?.data?.message || 'Failed to delete video';
+      toast.error(errorMsg);
+      setDeletingId(null);
     },
   });
 
   const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this video?')) {
-      deleteMutation.mutate(id);
-    }
+    console.log('🗑️ Delete clicked for video ID:', id);
+    setDeletingId(id);
   };
 
   return (
@@ -81,23 +86,48 @@ const VideosManagement = () => {
                   </div>
                 </div>
                 <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    className="w-8 h-8"
-                    onClick={() => navigate(`/admin/videos/edit/${video._id}`)}
-                  >
-                    <Edit className="w-3 h-3" />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    className="w-8 h-8 text-red-500"
-                    onClick={() => handleDelete(video._id)}
-                    disabled={deleteMutation.isPending}
-                  >
-                    <Trash2 className="w-3 h-3" />
-                  </Button>
+                  {deletingId === video._id ? (
+                    <div className="flex items-center gap-1 bg-background/90 backdrop-blur-sm p-1 rounded-lg border border-red-500/50">
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        className="h-8 px-2 text-[10px]"
+                        onClick={() => deleteMutation.mutate(video._id)}
+                        disabled={deleteMutation.isPending}
+                      >
+                        {deleteMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Confirm'}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-8 px-2 text-[10px]"
+                        onClick={() => setDeletingId(null)}
+                        disabled={deleteMutation.isPending}
+                      >
+                        No
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <Button
+                        size="icon"
+                        variant="secondary"
+                        className="w-8 h-8"
+                        onClick={() => navigate(`/admin/videos/edit/${video._id}`)}
+                      >
+                        <Edit className="w-3 h-3" />
+                      </Button>
+                      <Button
+                        size="icon"
+                        variant="secondary"
+                        className="w-8 h-8 text-red-500"
+                        onClick={() => handleDelete(video._id)}
+                        disabled={deleteMutation.isPending}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="p-4">

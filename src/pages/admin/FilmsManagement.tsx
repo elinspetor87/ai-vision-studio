@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { filmService } from '@/services/filmService';
 import { Loader2, Plus, Edit, Trash2 } from 'lucide-react';
@@ -8,6 +9,7 @@ import { toast } from 'sonner';
 const FilmsManagement = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const { data: films, isLoading } = useQuery({
     queryKey: ['films-admin'],
@@ -20,16 +22,19 @@ const FilmsManagement = () => {
     onSuccess: () => {
       toast.success('Film deleted successfully');
       queryClient.invalidateQueries({ queryKey: ['films-admin'] });
+      setDeletingId(null);
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Failed to delete film');
+      console.error('Delete error:', error);
+      const errorMsg = error.response?.data?.message || 'Failed to delete film';
+      toast.error(errorMsg);
+      setDeletingId(null);
     },
   });
 
   const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this film?')) {
-      deleteMutation.mutate(id);
-    }
+    console.log('🗑️ Delete clicked for film ID:', id);
+    setDeletingId(id);
   };
 
   return (
@@ -77,26 +82,47 @@ const FilmsManagement = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    onClick={() => navigate(`/admin/films/edit/${film._id}`)}
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    className="text-red-500"
-                    onClick={() => handleDelete(film._id)}
-                    disabled={deleteMutation.isPending}
-                  >
-                    {deleteMutation.isPending ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Trash2 className="w-4 h-4" />
-                    )}
-                  </Button>
+                  {deletingId === film._id ? (
+                    <div className="flex items-center gap-1 bg-background/90 backdrop-blur-sm p-1 rounded-lg border border-red-500/50">
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        className="h-8 px-2 text-[10px]"
+                        onClick={() => deleteMutation.mutate(film._id)}
+                        disabled={deleteMutation.isPending}
+                      >
+                        {deleteMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Confirm'}
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-8 px-2 text-[10px]"
+                        onClick={() => setDeletingId(null)}
+                        disabled={deleteMutation.isPending}
+                      >
+                        No
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <Button
+                        size="icon"
+                        variant="secondary"
+                        onClick={() => navigate(`/admin/films/edit/${film._id}`)}
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        size="icon"
+                        variant="secondary"
+                        className="text-red-500"
+                        onClick={() => handleDelete(film._id)}
+                        disabled={deleteMutation.isPending}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="p-4">
@@ -112,8 +138,8 @@ const FilmsManagement = () => {
                     </span>
                   )}
                   <span className={`px-2 py-1 rounded text-xs font-medium ${film.status === 'active'
-                      ? 'bg-green-500/20 text-green-600 dark:text-green-400'
-                      : 'bg-gray-500/20 text-gray-600 dark:text-gray-400'
+                    ? 'bg-green-500/20 text-green-600 dark:text-green-400'
+                    : 'bg-gray-500/20 text-gray-600 dark:text-gray-400'
                     }`}>
                     {film.status === 'active' ? '✓ Published' : '✗ Archived'}
                   </span>

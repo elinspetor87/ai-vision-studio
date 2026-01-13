@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { blogService } from '@/services/blogService';
 import { Loader2, Plus, Edit, Trash2, Eye } from 'lucide-react';
@@ -8,6 +9,7 @@ import { toast } from 'sonner';
 const BlogManagement = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ['blog-posts-admin'],
@@ -19,22 +21,19 @@ const BlogManagement = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['blog-posts-admin'] });
       toast.success('Post deleted successfully');
+      setDeletingId(null);
     },
     onError: (error: any) => {
       console.error('Delete error:', error);
       const errorMsg = error.response?.data?.message || 'Failed to delete post';
       toast.error(errorMsg);
+      setDeletingId(null);
     }
   });
 
   const handleDelete = async (id: string) => {
     console.log('🖱️ Delete request initiated for ID:', id);
-    if (confirm('Are you sure you want to delete this post?')) {
-      console.log('✅ Confirmation received. Mutating...');
-      deleteMutation.mutate(id);
-    } else {
-      console.log('❌ Deletion cancelled by user.');
-    }
+    setDeletingId(id);
   };
 
   return (
@@ -102,33 +101,59 @@ const BlogManagement = () => {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => window.open(`/blog/${post.slug}`, '_blank')}
-                      >
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => navigate(`/admin/blog/edit/${post._id}`)}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-red-500 hover:text-red-600"
-                        onClick={() => handleDelete(post._id)}
-                        disabled={deleteMutation.isPending}
-                      >
-                        {deleteMutation.isPending ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <Trash2 className="w-4 h-4" />
-                        )}
-                      </Button>
+                      {deletingId === post._id ? (
+                        <div className="flex items-center gap-2 bg-red-500/10 p-1 rounded-lg border border-red-500/20">
+                          <span className="text-xs font-medium text-red-500 px-2 animate-pulse">Confirm?</span>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            className="h-8 px-3"
+                            onClick={() => deleteMutation.mutate(post._id)}
+                            disabled={deleteMutation.isPending}
+                          >
+                            {deleteMutation.isPending ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              'Delete'
+                            )}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="h-8 px-3"
+                            onClick={() => setDeletingId(null)}
+                            disabled={deleteMutation.isPending}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      ) : (
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => window.open(`/blog/${post.slug}`, '_blank')}
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => navigate(`/admin/blog/edit/${post._id}`)}
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="text-red-500 hover:text-red-600"
+                            onClick={() => handleDelete(post._id)}
+                            disabled={deleteMutation.isPending}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

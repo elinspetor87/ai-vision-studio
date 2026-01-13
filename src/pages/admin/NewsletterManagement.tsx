@@ -50,22 +50,27 @@ const NewsletterManagement = () => {
         },
     });
 
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+
     const deleteMutation = useMutation({
         mutationFn: (id: string) => newsletterService.deleteSubscriber(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['subscribers'] });
             queryClient.invalidateQueries({ queryKey: ['newsletter-stats'] });
             toast.success('Subscriber permanently deleted');
+            setDeletingId(null);
         },
         onError: (error: any) => {
-            toast.error(error.message || 'Failed to delete subscriber');
+            console.error('Delete error:', error);
+            const errorMsg = error.response?.data?.message || 'Failed to delete subscriber';
+            toast.error(errorMsg);
+            setDeletingId(null);
         },
     });
 
     const handleDelete = (id: string) => {
-        if (window.confirm('Are you sure you want to permanently delete this subscriber? This action cannot be undone.')) {
-            deleteMutation.mutate(id);
-        }
+        console.log('🗑️ Delete clicked for subscriber ID:', id);
+        setDeletingId(id);
     };
 
     const handleExport = () => {
@@ -198,22 +203,47 @@ const NewsletterManagement = () => {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                {subscriber.isActive && (
-                                                    <DropdownMenuItem
-                                                        className="text-orange-500"
-                                                        onClick={() => unsubscribeMutation.mutate(subscriber.email)}
-                                                    >
-                                                        <XCircle className="w-4 h-4 mr-2" />
-                                                        Unsubscribe
-                                                    </DropdownMenuItem>
+                                                {deletingId === subscriber._id ? (
+                                                    <div className="flex items-center gap-1 p-1 bg-red-500/10 rounded border border-red-500/20 m-1">
+                                                        <Button
+                                                            size="sm"
+                                                            variant="destructive"
+                                                            className="h-7 px-2 text-[10px]"
+                                                            onClick={() => deleteMutation.mutate(subscriber._id)}
+                                                            disabled={deleteMutation.isPending}
+                                                        >
+                                                            {deleteMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : 'Confirm'}
+                                                        </Button>
+                                                        <Button
+                                                            size="sm"
+                                                            variant="ghost"
+                                                            className="h-7 px-2 text-[10px]"
+                                                            onClick={() => setDeletingId(null)}
+                                                            disabled={deleteMutation.isPending}
+                                                        >
+                                                            No
+                                                        </Button>
+                                                    </div>
+                                                ) : (
+                                                    <>
+                                                        {subscriber.isActive && (
+                                                            <DropdownMenuItem
+                                                                className="text-orange-500"
+                                                                onClick={() => unsubscribeMutation.mutate(subscriber.email)}
+                                                            >
+                                                                <XCircle className="w-4 h-4 mr-2" />
+                                                                Unsubscribe
+                                                            </DropdownMenuItem>
+                                                        )}
+                                                        <DropdownMenuItem
+                                                            className="text-red-500"
+                                                            onClick={() => handleDelete(subscriber._id)}
+                                                        >
+                                                            <Trash2 className="w-4 h-4 mr-2" />
+                                                            Permanently Delete
+                                                        </DropdownMenuItem>
+                                                    </>
                                                 )}
-                                                <DropdownMenuItem
-                                                    className="text-red-500"
-                                                    onClick={() => handleDelete(subscriber._id)}
-                                                >
-                                                    <Trash2 className="w-4 h-4 mr-2" />
-                                                    Permanently Delete
-                                                </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>

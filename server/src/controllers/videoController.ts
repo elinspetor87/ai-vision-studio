@@ -114,19 +114,28 @@ export const updateVideo = asyncHandler(
 export const deleteVideo = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    console.log(`🗑️ Attempting to delete video with ID: ${id}`);
 
-    const video = await VideoProject.findByIdAndDelete(id);
+    try {
+      const video = await VideoProject.findByIdAndDelete(id);
 
-    if (!video) {
-      throw new AppError('Video project not found', 404);
+      if (!video) {
+        console.warn(`⚠️ Video not found for deletion: ${id}`);
+        throw new AppError('Video project not found', 404);
+      }
+
+      console.log(`✅ Successfully deleted video: ${id} (${video.title})`);
+
+      // TODO: Delete associated thumbnail from Cloudinary if needed
+
+      res.status(200).json({
+        success: true,
+        message: 'Video project deleted successfully',
+      });
+    } catch (error) {
+      console.error(`❌ Error deleting video ${id}:`, error);
+      throw error;
     }
-
-    // TODO: Delete associated thumbnail from Cloudinary if needed
-
-    res.status(200).json({
-      success: true,
-      message: 'Video project deleted successfully',
-    });
   }
 );
 
