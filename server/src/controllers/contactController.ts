@@ -150,17 +150,25 @@ export const updateSubmissionStatus = asyncHandler(
 export const deleteSubmission = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    console.log(`🗑️ Attempting to delete submission with ID: ${id}`);
 
-    const submission = await ContactSubmission.findByIdAndDelete(id);
+    try {
+      const submission = await ContactSubmission.findByIdAndDelete(id);
 
-    if (!submission) {
-      throw new AppError('Contact submission not found', 404);
+      if (!submission) {
+        console.warn(`⚠️ Submission not found for deletion: ${id}`);
+        throw new AppError('Contact submission not found', 404);
+      }
+
+      console.log(`✅ Successfully deleted submission: ${id}`);
+      res.status(200).json({
+        success: true,
+        message: 'Submission deleted successfully',
+      });
+    } catch (error) {
+      console.error(`❌ Error deleting submission ${id}:`, error);
+      throw error;
     }
-
-    res.status(200).json({
-      success: true,
-      message: 'Submission deleted successfully',
-    });
   }
 );
 

@@ -52,8 +52,12 @@ const Messages = () => {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this message?')) {
+    console.log('🗑️ Delete clicked for message ID:', id);
+    if (window.confirm('Are you sure you want to delete this message?')) {
+      console.log('✅ Delete confirmed, calling mutation...');
       deleteMutation.mutate(id);
+    } else {
+      console.log('❌ Delete cancelled by user');
     }
   };
 
@@ -104,15 +108,14 @@ const Messages = () => {
                         {message.name}
                       </h3>
                       <span
-                        className={`px-2.5 py-0.5 rounded-full text-xs font-body font-medium ${
-                          message.status === 'pending'
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-body font-medium ${message.status === 'pending'
                             ? 'bg-yellow-500/20 text-yellow-500'
                             : message.status === 'contacted'
-                            ? 'bg-blue-500/20 text-blue-500'
-                            : message.status === 'completed'
-                            ? 'bg-green-500/20 text-green-500'
-                            : 'bg-red-500/20 text-red-500'
-                        }`}
+                              ? 'bg-blue-500/20 text-blue-500'
+                              : message.status === 'completed'
+                                ? 'bg-green-500/20 text-green-500'
+                                : 'bg-red-500/20 text-red-500'
+                          }`}
                       >
                         {message.status}
                       </span>
