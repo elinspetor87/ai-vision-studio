@@ -247,7 +247,7 @@ const SettingsManagement = () => {
       },
     };
 
-    // Handle profile image - prioritize file upload over URL
+    // Handle profile image - always send to allow clearing
     if (imageFile) {
       try {
         toast.info('Uploading profile image...');
@@ -261,15 +261,16 @@ const SettingsManagement = () => {
         toast.error(error.response?.data?.error || 'Failed to upload image');
         return;
       }
-    } else if (formData.profileImageUrl) {
+    } else {
+      // Send current (possibly empty) URL to allow clearing
       submitData.profileImage = {
-        url: formData.profileImageUrl,
-        publicId: formData.profileImageUrl.split('/').pop() || 'external',
-        alt: formData.profileImageAlt,
+        url: formData.profileImageUrl || '',
+        publicId: formData.profileImageUrl ? (formData.profileImageUrl.split('/').pop() || 'external') : '',
+        alt: formData.profileImageAlt || '',
       };
     }
 
-    // Handle logo - prioritize file upload over URL
+    // Handle logo - always send to allow clearing
     if (logoFile) {
       try {
         toast.info('Uploading logo...');
@@ -283,19 +284,19 @@ const SettingsManagement = () => {
         toast.error(error.response?.data?.error || 'Failed to upload logo');
         return;
       }
-    } else if (formData.logoUrl) {
-      console.log('📝 Using logo URL from form:', formData.logoUrl);
+    } else {
+      // Send current (possibly empty) URL to allow clearing
       submitData.logo = {
-        url: formData.logoUrl,
-        publicId: formData.logoUrl.split('/').pop() || 'external',
-        alt: formData.logoAlt,
+        url: formData.logoUrl || '',
+        publicId: formData.logoUrl ? (formData.logoUrl.split('/').pop() || 'external') : '',
+        alt: formData.logoAlt || '',
       };
     }
 
     // Logo text
     submitData.logoText = formData.logoText;
 
-    // Handle favicon - prioritize file upload over URL
+    // Handle favicon - always send to allow clearing
     if (faviconFile) {
       try {
         toast.info('Uploading favicon...');
@@ -308,11 +309,11 @@ const SettingsManagement = () => {
         toast.error(error.response?.data?.error || 'Failed to upload favicon');
         return;
       }
-    } else if (formData.faviconUrl) {
-      console.log('📝 Using favicon URL from form:', formData.faviconUrl);
+    } else {
+      // Send current (possibly empty) URL to allow clearing
       submitData.favicon = {
-        url: formData.faviconUrl,
-        publicId: formData.faviconUrl.split('/').pop() || 'external',
+        url: formData.faviconUrl || '',
+        publicId: formData.faviconUrl ? (formData.faviconUrl.split('/').pop() || 'external') : '',
       };
     }
 
