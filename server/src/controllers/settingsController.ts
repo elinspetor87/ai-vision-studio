@@ -38,6 +38,10 @@ export const updateSettings = asyncHandler(
       // Merge update to preserve existing fields
       Object.keys(updateData).forEach(key => {
         (settings as any)[key] = updateData[key];
+        // Ensure Mongoose detects changes in nested objects
+        if (typeof updateData[key] === 'object' && updateData[key] !== null) {
+          settings?.markModified(key);
+        }
       });
       await settings.save();
     }
