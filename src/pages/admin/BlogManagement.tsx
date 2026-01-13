@@ -22,7 +22,8 @@ const BlogManagement = () => {
     },
     onError: (error: any) => {
       console.error('Delete error:', error);
-      toast.error('Failed to delete post');
+      const errorMsg = error.response?.data?.message || 'Failed to delete post';
+      toast.error(errorMsg);
     }
   });
 

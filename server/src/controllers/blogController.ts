@@ -186,19 +186,28 @@ export const updatePost = asyncHandler(
 export const deletePost = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    console.log(`🗑️ Attempting to delete blog post with ID: ${id}`);
 
-    const post = await BlogPost.findByIdAndDelete(id);
+    try {
+      const post = await BlogPost.findByIdAndDelete(id);
 
-    if (!post) {
-      throw new AppError('Blog post not found', 404);
+      if (!post) {
+        console.warn(`⚠️ Blog post not found for deletion: ${id}`);
+        throw new AppError('Blog post not found', 404);
+      }
+
+      console.log(`✅ Successfully deleted blog post: ${id} (${post.title})`);
+
+      // TODO: Delete associated image from Cloudinary if needed
+
+      res.status(200).json({
+        success: true,
+        message: 'Blog post deleted successfully',
+      });
+    } catch (error) {
+      console.error(`❌ Error deleting blog post ${id}:`, error);
+      throw error;
     }
-
-    // TODO: Delete associated image from Cloudinary if needed
-
-    res.status(200).json({
-      success: true,
-      message: 'Blog post deleted successfully',
-    });
   }
 );
 
