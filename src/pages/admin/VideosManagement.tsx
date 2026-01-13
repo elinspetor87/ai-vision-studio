@@ -1,15 +1,36 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { videoService } from '@/services/videoService';
 import { Loader2, Plus, Edit, Trash2, Play } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 const VideosManagement = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const { data: videos, isLoading } = useQuery({
     queryKey: ['videos-admin'],
     queryFn: () => videoService.getAllVideos('all'),
   });
+
+  // Delete video mutation
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => videoService.deleteVideo(id),
+    onSuccess: () => {
+      toast.success('Video deleted successfully');
+      queryClient.invalidateQueries({ queryKey: ['videos-admin'] });
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || 'Failed to delete video');
+    },
+  });
+
+  const handleDelete = (id: string) => {
+    if (confirm('Are you sure you want to delete this video?')) {
+      deleteMutation.mutate(id);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -68,7 +89,13 @@ const VideosManagement = () => {
                   >
                     <Edit className="w-3 h-3" />
                   </Button>
-                  <Button size="icon" variant="secondary" className="w-8 h-8 text-red-500">
+                  <Button
+                    size="icon"
+                    variant="secondary"
+                    className="w-8 h-8 text-red-500"
+                    onClick={() => handleDelete(video._id)}
+                    disabled={deleteMutation.isPending}
+                  >
                     <Trash2 className="w-3 h-3" />
                   </Button>
                 </div>
