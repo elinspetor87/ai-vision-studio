@@ -144,6 +144,12 @@ export const createPost = asyncHandler(
           'a': ['href', 'target', 'rel'],
           'img': ['src', 'alt', 'title', 'class']
         },
+        transformTags: {
+          'a': sanitizeHtml.simpleTransform('a', {
+            rel: 'nofollow noopener noreferrer',
+            target: '_blank'
+          })
+        },
         allowedClasses: {
           'img': ['rounded-lg', 'max-w-full', 'h-auto', 'my-4']
         }
@@ -185,6 +191,12 @@ export const updatePost = asyncHandler(
         allowedAttributes: {
           'a': ['href', 'target', 'rel'],
           'img': ['src', 'alt', 'title', 'class']
+        },
+        transformTags: {
+          'a': sanitizeHtml.simpleTransform('a', {
+            rel: 'nofollow noopener noreferrer',
+            target: '_blank'
+          })
         },
         allowedClasses: {
           'img': ['rounded-lg', 'max-w-full', 'h-auto', 'my-4']
