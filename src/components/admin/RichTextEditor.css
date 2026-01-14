@@ -1,6 +1,6 @@
 /* Rich Text Editor Styles */
 .ProseMirror {
-  @apply min-h-[300px] max-w-none p-4 focus:outline-none;
+  @apply min-h-[300px] max-w-none p-4 focus:outline-none text-justify;
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {
@@ -9,19 +9,19 @@
 }
 
 .ProseMirror h2 {
-  @apply text-2xl font-bold mt-6 mb-4;
+  @apply text-2xl font-bold mt-6 mb-4 font-display text-foreground;
 }
 
 .ProseMirror h3 {
-  @apply text-xl font-bold mt-5 mb-3;
+  @apply text-xl font-bold mt-5 mb-3 font-display text-foreground;
 }
 
 .ProseMirror h4 {
-  @apply text-lg font-bold mt-4 mb-2;
+  @apply text-lg font-bold mt-4 mb-2 font-display text-foreground;
 }
 
 .ProseMirror p {
-  @apply mb-4;
+  @apply mb-8 font-body text-muted-foreground leading-relaxed;
 }
 
 .ProseMirror ul,
@@ -38,23 +38,23 @@
 }
 
 .ProseMirror li {
-  @apply mb-2;
+  @apply mb-2 font-body text-muted-foreground;
 }
 
 .ProseMirror a {
-  @apply text-primary underline hover:text-primary/80 transition-colors;
+  @apply text-primary underline hover:text-primary/80 transition-colors no-underline hover:underline;
 }
 
 .ProseMirror img {
-  @apply rounded-lg max-w-full h-auto my-4;
+  @apply rounded-xl max-w-full h-auto my-4 border border-border;
 }
 
 .ProseMirror code {
-  @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+  @apply bg-secondary px-2 py-1 rounded text-sm font-mono text-primary;
 }
 
 .ProseMirror pre {
-  @apply bg-muted p-4 rounded-lg overflow-x-auto mb-4;
+  @apply bg-secondary p-4 rounded-lg overflow-x-auto mb-4 border border-border;
 }
 
 .ProseMirror pre code {
@@ -63,4 +63,8 @@
 
 .ProseMirror blockquote {
   @apply border-l-4 border-primary pl-4 italic my-4;
+}
+
+.ProseMirror strong {
+  @apply text-foreground font-semibold;
 }
