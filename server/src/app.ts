@@ -34,7 +34,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false, // Vite/React handling
+  crossOriginEmbedderPolicy: false,
+  frameguard: { action: 'deny' }, // Prevent clickjacking
+  hsts: { maxAge: 31536000, includeSubDomains: true, preload: true }, // Force HTTPS
+}));
 
 // Trust proxy (for Nginx)
 app.set('trust proxy', 1);
