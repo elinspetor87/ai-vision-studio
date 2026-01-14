@@ -7,6 +7,7 @@ import CommentForm from '@/components/CommentForm';
 import CommentsList from '@/components/CommentsList';
 import { Calendar, Clock, ArrowLeft, Tag, Loader2 } from 'lucide-react';
 import { blogService } from '@/services/blogService';
+import '@/components/admin/RichTextEditor.css';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
