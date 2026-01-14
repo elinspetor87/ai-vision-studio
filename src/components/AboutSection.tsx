@@ -29,7 +29,7 @@ const AboutSection = () => {
     sectionTitle: 'The Journey',
     heading: 'From VFX Pioneer to',
     headingHighlight: 'AI Visionary',
-    paragraph1: "With over 15 years in visual effects, I've had the privilege of working on blockbuster films that have captivated audiences worldwide. From intricate compositing work to leading VFX teams, my journey has been defined by an relentless pursuit of visual excellence.",
+    paragraph1: "Based in Dublin, with over 15 years in visual effects, I've had the privilege of working on blockbuster films that have captivated audiences worldwide. From intricate compositing work to leading VFX teams, my journey has been defined by a relentless pursuit of visual excellence.",
     paragraph2: "Today, I'm pioneering the integration of AI into filmmaking—leveraging tools like Midjourney, Runway, and Sora to create imagery that was once impossible. My VFX background gives me a unique edge: I understand both the art and the technique.",
     stats: {
       filmsShows: '50+',
@@ -62,14 +62,14 @@ const AboutSection = () => {
   }, []);
 
   return (
-    <section 
-      id="about" 
+    <section
+      id="about"
       ref={sectionRef}
       className="relative py-32 bg-background overflow-hidden"
     >
       {/* Background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-      
+
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left content */}
