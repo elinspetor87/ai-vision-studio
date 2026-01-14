@@ -140,7 +140,7 @@ const BlogPost = () => {
 
             {/* Main Content */}
             <div
-              className="prose prose-invert prose-lg max-w-none
+              className="prose prose-invert prose-lg max-w-none text-justify
                 prose-headings:font-display prose-headings:text-foreground
                 prose-p:font-body prose-p:text-muted-foreground prose-p:leading-relaxed
                 prose-a:text-primary prose-a:no-underline hover:prose-a:underline
