@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import BlogPost from '../models/BlogPost';
 import Film from '../models/Film';
+import Project from '../models/Project';
 
 dotenv.config();
 
@@ -205,24 +206,14 @@ const films = [
     title: "The Woman King",
     slug: "the-woman-king",
     description: "A historical epic about the Agojie, an all-female warrior unit who protected the African Kingdom of Dahomey in the 1800s.",
-    detailedDescription: `<p>The Woman King is a 2022 American historical epic film directed by Gina Prince-Bythewood. The film stars Viola Davis as a general who trains the next generation of warriors to fight their enemies.</p>
-
-<p>As a VFX artist on this project, I contributed to creating the epic battle sequences and environment extensions that helped bring this powerful story to life. The scale of the battles required extensive digital enhancements while maintaining the practical, grounded feel the director wanted.</p>
-
-<p>This was one of the most rewarding projects I've worked on, combining historical accuracy with cinematic spectacle.</p>`,
+    detailedDescription: "<p>The Woman King is a 2022 historical epic. As a Compositor, I contributed to creating the epic battle sequences and environment extensions.</p>",
     year: 2022,
-    role: "Visual Effects Artist",
+    role: "Compositor",
     category: "Feature Film",
     image: {
-      url: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1200&h=675&fit=crop",
-      alt: "Historical epic battle scene"
+      url: "https://m.media-amazon.com/images/M/MV5BNzM4ODY0NzctZDIyNC00MzE4LWI3NDYtYjIyYTUyZWFmYzJkXkEyXkFqcGc@.jpg",
+      alt: "The Woman King Poster"
     },
-    gallery: [
-      {
-        url: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=800&h=450&fit=crop",
-        caption: "Epic battle sequences"
-      }
-    ],
     imdbUrl: "https://www.imdb.com/title/tt8093700/",
     featured: true,
     order: 1,
@@ -232,55 +223,355 @@ const films = [
     title: "Evil Dead Rise",
     slug: "evil-dead-rise",
     description: "A twisted tale of two estranged sisters whose reunion is cut short by the rise of flesh-possessing demons.",
-    detailedDescription: `<p>Evil Dead Rise (2023) is a supernatural horror film written and directed by Lee Cronin. The film takes the franchise to a new urban setting while maintaining the franchise's signature visceral horror.</p>
-
-<p>Working on this horror film presented unique challenges. The VFX work needed to enhance the practical effects and makeup while maintaining the gritty, realistic feel that makes the franchise so effective.</p>
-
-<p>From blood simulations to environmental destruction, every effect needed to serve the story and maximize the scares.</p>`,
+    detailedDescription: "<p>Working on this horror film as a Digital Compositor involved enhancing practical effects and maintaining a gritty, realistic feel.</p>",
     year: 2023,
-    role: "Visual Effects Artist",
+    role: "Digital Compositor",
     category: "Feature Film",
     image: {
-      url: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=1200&h=675&fit=crop",
-      alt: "Dark horror atmosphere"
+      url: "https://m.media-amazon.com/images/M/MV5BMjM1ZmViMmYtOGYzZC00YzhmLWE0MTMtMzNjYzcyNjEwYWRkXkEyXkFqcGc@.jpg",
+      alt: "Evil Dead Rise Poster"
     },
-    gallery: [
-      {
-        url: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?w=800&h=450&fit=crop",
-        caption: "Horror VFX work"
-      }
-    ],
     imdbUrl: "https://www.imdb.com/title/tt13345606/",
     featured: true,
     order: 2,
-    tags: ["Horror", "Supernatural", "VFX", "Blood & Gore"]
+    tags: ["Horror", "Supernatural", "VFX"]
   },
   {
     title: "Me Time",
     slug: "me-time",
-    description: "A comedy about a stay-at-home dad who finds himself with some 'me time' for the first time in years while his family is away.",
-    detailedDescription: `<p>Me Time (2022) is a buddy comedy starring Kevin Hart and Mark Wahlberg. The film follows a stay-at-home dad's wild weekend adventure.</p>
-
-<p>While primarily a comedy, the film featured several action sequences and set pieces that required VFX work. My role involved creating environment extensions, vehicle work, and enhancing practical stunts.</p>
-
-<p>Comedy films can be just as demanding as action blockbusters when it comes to VFX - everything needs to look believable while supporting the comedic timing.</p>`,
+    description: "A comedy about a stay-at-home dad who finds himself with some 'me time' for the first time in years.",
+    detailedDescription: "<p>My role as a Visual Effects Artist involved creating environment extensions and vehicle work for various action-comedy sequences.</p>",
     year: 2022,
     role: "Visual Effects Artist",
     category: "Feature Film",
     image: {
-      url: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&h=675&fit=crop",
-      alt: "Comedy film production"
+      url: "https://m.media-amazon.com/images/M/MV5BYjYzMTkyYjUtYTVmYi00Y2ZjLTg2N2ItZGFhODAzYTVmYzkzXkEyXkFqcGc@.jpg",
+      alt: "Me Time Poster"
     },
-    gallery: [
-      {
-        url: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&h=450&fit=crop",
-        caption: "Comedy VFX work"
-      }
-    ],
-    imdbUrl: "https://www.imdb.com/title/tt14444726/",
+    imdbUrl: "https://www.imdb.com/title/tt14309446/",
     featured: true,
     order: 3,
-    tags: ["Comedy", "Action Comedy", "VFX"]
+    tags: ["Comedy", "Action", "VFX"]
+  },
+  {
+    title: "See",
+    slug: "see",
+    description: "In a future where humankind has lost the sense of sight, a set of twins is born with the ability to see.",
+    year: 2022,
+    role: "Digital Compositor",
+    category: "TV Series",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BMDEwYTg3MWQtZTNmMi00ZjU1LTkwNWQtZDFmODQ5NjcwMDc2XkEyXkFqcGc@.jpg",
+      alt: "See Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt7949218/",
+    featured: true,
+    order: 4,
+    tags: ["Sci-Fi", "Drama", "Action"]
+  },
+  {
+    title: "Tarrac",
+    slug: "tarrac",
+    description: "A woman returns to her home in the Donegal Gaeltacht to help her father after he suffers a minor heart attack.",
+    year: 2022,
+    role: "Digital Compositor",
+    category: "Feature Film",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BZGMxNzQ0M2YtOWM2Ni00MmMzLWI0ZGItNzI3Y2JhNDc3OTA1XkEyXkFqcGc@.jpg",
+      alt: "Tarrac Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt10653008/",
+    featured: false,
+    order: 5,
+    tags: ["Drama", "Sport"]
+  },
+  {
+    title: "Hearts of Stone",
+    slug: "hearts-of-stone",
+    description: "A short film project showcasing advanced visual storytelling.",
+    year: 2024,
+    role: "Digital Compositor",
+    category: "Short Film",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BMmJkMmNlZWUtNmY2Yi00NjgyLTgzNjctYzg4ODlhNDI5Y2NlXkEyXkFqcGc@.jpg",
+      alt: "Hearts of Stone Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt7653034/",
+    featured: false,
+    order: 6,
+    tags: ["VFX", "Short"]
+  },
+  {
+    title: "Latin Blood",
+    slug: "latin-blood",
+    description: "The Ballad of Ney Matogrosso - A biographical look at the legendary Brazilian performer.",
+    year: 2025,
+    role: "Digital Compositor",
+    category: "Feature Film",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BYmU0NDY3ODctNjhmMS00Y2YxLTljZTAtN2E5NzA4NTExODU2XkEyXkFqcGc@.jpg",
+      alt: "Latin Blood Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt35301431/",
+    featured: true,
+    order: 7,
+    tags: ["Biography", "Music", "Drama"]
+  },
+  {
+    title: "Good Omens",
+    slug: "good-omens",
+    description: "A fastidious angel and a loose-living demon team up to prevent the coming of the Antichrist.",
+    year: 2023,
+    role: "Digital Compositor",
+    category: "TV Series",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BZDRmNGY5MTUtNDQxMC00MjMyLWIzODQtNzU2ZTdhMjJhOTA5XkEyXkFqcGc@.jpg",
+      alt: "Good Omens Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt1869454/",
+    featured: true,
+    order: 8,
+    tags: ["Comedy", "Fantasy", "Drama"]
+  },
+  {
+    title: "Carnival Row",
+    slug: "carnival-row",
+    description: "A human detective and a fairy rekindle a dangerous affair in a Victorian fantasy world.",
+    year: 2023,
+    role: "Digital Compositor",
+    category: "TV Series",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BNzgzYmQ0OTYtMjMwMS00ZGI2LWE5MjMtMWViZjkwMGY4NGZmXkEyXkFqcGc@.jpg",
+      alt: "Carnival Row Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt0489974/",
+    featured: false,
+    order: 9,
+    tags: ["Fantasy", "Crime", "Drama"]
+  },
+  {
+    title: "Bad Sisters",
+    slug: "bad-sisters",
+    description: "The Garvey sisters are bound together by the premature death of their parents and a promise to always protect one another.",
+    year: 2022,
+    role: "Visual Effects Artist",
+    category: "TV Series",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BYzg0ZWQzNTUtYTE0Yy00OGMyLWFkZjEtOTU5YjA2ZDdmZDEwXkEyXkFqcGc@.jpg",
+      alt: "Bad Sisters Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt15469618/",
+    featured: false,
+    order: 10,
+    tags: ["Comedy", "Drama", "Thriller"]
+  },
+  {
+    title: "World on Fire",
+    slug: "world-on-fire",
+    description: "A multi-perspective look at the events of World War II from regular people living through it.",
+    year: 2023,
+    role: "Visual Effects Artist",
+    category: "TV Series",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BYWUxNmRiYmUtMTMyMy00MWJhLWI5MTYtYjA3MWQ5MGMwMWJjXkEyXkFqcGc@.jpg",
+      alt: "World on Fire Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt8001092/",
+    featured: false,
+    order: 11,
+    tags: ["History", "Drama", "War"]
+  },
+  {
+    title: "Meu Nome é Gal",
+    slug: "meu-nome-e-gal",
+    description: "Follows the life and career of Gal Costa, one of the greatest singers in Brazilian history.",
+    year: 2023,
+    role: "Digital Compositor",
+    category: "Feature Film",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BNGE0OGRjZGYtNzFiOS00MGQyLThmMjctN2E3ZDRhMjhkMzUyXkEyXkFqcGc@.jpg",
+      alt: "Meu Nome é Gal Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt18244348/",
+    featured: false,
+    order: 12,
+    tags: ["Biography", "Drama", "Music"]
+  },
+  {
+    title: "Sunlight",
+    slug: "sunlight",
+    description: "A heartwarming story set in a visually stunning environment.",
+    year: 2023,
+    role: "Compositor",
+    category: "Feature Film",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BYTMxY2QxOWUtM2U2Ni00M2M4LTg1NjMtOTQxYTFmZDkxZTNlXkEyXkFqcGc@.jpg",
+      alt: "Sunlight Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt15204578/",
+    featured: false,
+    order: 13,
+    tags: ["Drama", "VFX"]
+  },
+  {
+    title: "A Praia do Fim do Mundo",
+    slug: "a-praia-do-fim-do-mundo",
+    description: "A visual exploration of the edges of the world.",
+    year: 2021,
+    role: "Digital Artist",
+    category: "Feature Film",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BMWNiZjcwNmMtYzA4NC00NzY4LWIxYTMtMDUzYjA2ZWYzZjFlXkEyXkFqcGc@.jpg",
+      alt: "A Praia do Fim do Mundo Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt15554804/",
+    featured: false,
+    order: 14,
+    tags: ["Drama", "Art"]
+  },
+  {
+    title: "Iron Island",
+    slug: "iron-island",
+    description: "Life on an oil platform where duty and personal conflict collide.",
+    year: 2018,
+    role: "Digital Compositor",
+    category: "TV Series",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BMTQxOTNmZTYtMWIzNi00ODg5LWJjY2MtMmY4ZDA1Mjg5ZmNiXkEyXkFqcGc@.jpg",
+      alt: "Iron Island Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt8949480/",
+    featured: false,
+    order: 15,
+    tags: ["Drama", "Action"]
+  },
+  {
+    title: "The Father's Shadow",
+    slug: "the-fathers-shadow",
+    description: "A young girl struggles with grief and the supernatural in an urban setting.",
+    year: 2018,
+    role: "Digital Compositor",
+    category: "Feature Film",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BODM3ZTg5MzQtMzVkMS00OGFlLTgzZTAtMTBmOTBlOGQyMjg3XkEyXkFqcGc@.jpg",
+      alt: "The Father's Shadow Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt6388464/",
+    featured: false,
+    order: 16,
+    tags: ["Horror", "Drama"]
+  },
+  {
+    title: "El Hipnotizador",
+    slug: "el-hipnotizador",
+    description: "The story of Arenas, a hypnotist who can put people into a trance to reveal their deepest secrets.",
+    year: 2017,
+    role: "Digital Compositor",
+    category: "TV Series",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BMzg2NTg3OTAxMV5BMl5BanBnXkFtZTgwNjc4MjM5NzE@.jpg",
+      alt: "El Hipnotizador Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt4905820/",
+    featured: false,
+    order: 17,
+    tags: ["Fantasy", "Mystery"]
+  },
+  {
+    title: "Edifício Paraíso",
+    slug: "edificio-paraiso",
+    description: "A look into the interconnected lives of residents in a residential building.",
+    year: 2017,
+    role: "Digital Compositor",
+    category: "TV Series",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BYzUyMDg2MTEtNjY3ZS00YmFkLTg1NGItZDI3OTQ4NGQ3ZTgxXkEyXkFqcGc@.jpg",
+      alt: "Edifício Paraíso Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt7049218/",
+    featured: false,
+    order: 18,
+    tags: ["Comedy", "Drama"]
+  },
+  {
+    title: "Find Me in Paris",
+    slug: "find-me-in-paris",
+    description: "A young ballet dancer from 1905 is transported to modern-day Paris.",
+    year: 2019,
+    role: "Digital Compositor",
+    category: "TV Series",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BZjQxNDIxMjUtOGJmYi00NjIwLTk2NjgtMzFmMzgxNmY5MGVkXkEyXkFqcGc@.jpg",
+      alt: "Find Me in Paris Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt7150060/",
+    featured: false,
+    order: 19,
+    tags: ["Family", "Fantasy", "Music"]
+  },
+  {
+    title: "The Minds of 99",
+    slug: "the-minds-of-99",
+    description: "A concert film capturing the energy of the Danish band The Minds of 99.",
+    year: 2025,
+    role: "Compositor",
+    category: "Documentary",
+    image: {
+      url: "https://m.media-amazon.com/images/M/MV5BYWY2NTQ2YWEtNjNhZS00NGY3LWFmOWUtYjkwMmE4MTJkNzQ0XkEyXkFqcGc@.jpg",
+      alt: "The Minds of 99 Poster"
+    },
+    imdbUrl: "https://www.imdb.com/title/tt34857055/",
+    featured: false,
+    order: 20,
+    tags: ["Music", "Documentary"]
+  }
+];
+
+const projects = [
+  {
+    title: "The Woman King",
+    slug: "the-woman-king-vfx",
+    role: "Visual Effects Artist",
+    year: "2022",
+    category: "Feature Film",
+    description: "Contributing to the epic battle sequences and environment extensions for this powerful historical drama.",
+    thumbnail: {
+      url: "https://m.media-amazon.com/images/M/MV5BNzM4ODY0NzctZDIyNC00MzE4LWI3NDYtYjIyYTUyZWFmYzJkXkEyXkFqcGc@.jpg",
+      alt: "The Woman King VFX Work"
+    },
+    featured: true,
+    status: "active",
+    order: 1
+  },
+  {
+    title: "Evil Dead Rise",
+    slug: "evil-dead-rise-vfx",
+    role: "Digital Compositor",
+    year: "2023",
+    category: "Feature Film",
+    description: "Creating chilling visual effects and seamless compositing for the latest entry in the iconic horror franchise.",
+    thumbnail: {
+      url: "https://m.media-amazon.com/images/M/MV5BMjM1ZmViMmYtOGYzZC00YzhmLWE0MTMtMzNjYzcyNjEwYWRkXkEyXkFqcGc@.jpg",
+      alt: "Evil Dead Rise VFX Work"
+    },
+    featured: true,
+    status: "active",
+    order: 2
+  },
+  {
+    title: "Good Omens",
+    slug: "good-omens-vfx",
+    role: "Digital Compositor",
+    year: "2023",
+    category: "TV Series",
+    description: "Crafting magical and celestial visual effects for the highly acclaimed fantasy series.",
+    thumbnail: {
+      url: "https://m.media-amazon.com/images/M/MV5BZDRmNGY5MTUtNDQxMC00MjMyLWIzODQtNzU2ZTdhMjJhOTA5XkEyXkFqcGc@.jpg",
+      alt: "Good Omens VFX Work"
+    },
+    featured: true,
+    status: "active",
+    order: 3
   }
 ];
 
@@ -296,6 +587,8 @@ const populateContent = async () => {
     await BlogPost.deleteMany({});
     console.log('🗑️  Clearing existing films...');
     await Film.deleteMany({});
+    console.log('🗑️  Clearing existing projects...');
+    await Project.deleteMany({});
 
     // Insert blog posts
     console.log('\n📰 Creating blog posts...');
@@ -311,10 +604,18 @@ const populateContent = async () => {
       console.log(`  ✅ Created: "${created.title}" (${created.year})`);
     }
 
+    // Insert projects
+    console.log('\n🏗️  Creating projects...');
+    for (const project of projects) {
+      const created = await Project.create(project);
+      console.log(`  ✅ Created: "${created.title}"`);
+    }
+
     console.log('\n✨ Content population complete!');
-    console.log(`\n📊 Summary:`);
+    console.log('\n📊 Summary:');
     console.log(`  📰 Blog Posts: ${blogPosts.length}`);
     console.log(`  🎬 Films: ${films.length}`);
+    console.log(`  🏗️  Projects: ${projects.length}`);
 
     process.exit(0);
   } catch (error) {

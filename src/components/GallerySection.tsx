@@ -77,7 +77,7 @@ const GallerySectionContent = ({ films }: { films: any[] }) => {
   const handleDragEnd = () => {
     if (!isDragging) return;
     setIsDragging(false);
-    
+
     if (Math.abs(dragOffset) > 80) {
       if (dragOffset > 0) {
         handlePrev();
@@ -102,9 +102,9 @@ const GallerySectionContent = ({ films }: { films: any[] }) => {
     const diff = index - currentIndex;
     const normalizedDiff = ((diff + films.length) % films.length);
     const adjustedDiff = normalizedDiff > films.length / 2 ? normalizedDiff - films.length : normalizedDiff;
-    
-    // Only show 5 cards max (2 behind, current, 2 ahead)
-    if (Math.abs(adjustedDiff) > 2) {
+
+    // Show more cards in the deck (3 behind, current, 3 ahead)
+    if (Math.abs(adjustedDiff) > 3) {
       return {
         opacity: 0,
         transform: 'scale(0.6) translateX(0)',
@@ -113,29 +113,38 @@ const GallerySectionContent = ({ films }: { films: any[] }) => {
       };
     }
 
-    const baseOffset = adjustedDiff * 70;
-    const dragInfluence = isDragging ? dragOffset * 0.3 : 0;
+    // Enhanced deck positioning
+    const baseOffset = adjustedDiff * 80;
+    const dragInfluence = isDragging ? dragOffset * 0.4 : 0;
     const offset = baseOffset - dragInfluence;
-    
-    const scale = 1 - Math.abs(adjustedDiff) * 0.12;
-    const opacity = 1 - Math.abs(adjustedDiff) * 0.3;
-    const rotate = adjustedDiff * 4 + (isDragging ? dragOffset * 0.02 : 0);
-    const yOffset = Math.abs(adjustedDiff) * 20;
-    const zIndex = 10 - Math.abs(adjustedDiff);
+
+    // More dramatic scaling for depth
+    const scale = 1 - Math.abs(adjustedDiff) * 0.08;
+    const opacity = adjustedDiff === 0 ? 1 : 0.85 - Math.abs(adjustedDiff) * 0.15;
+
+    // Add slight random rotation jitter for natural deck feel
+    const baseRotation = adjustedDiff * 3;
+    const jitter = (index % 3 - 1) * 1.5; // Subtle variation based on index
+    const rotate = baseRotation + jitter + (isDragging ? dragOffset * 0.015 : 0);
+
+    // Stack cards with slight vertical offset
+    const yOffset = Math.abs(adjustedDiff) * 15 + (adjustedDiff < 0 ? -5 : 5);
+    const zIndex = 20 - Math.abs(adjustedDiff);
 
     return {
       opacity,
       transform: `translateX(${offset}px) translateY(${yOffset}px) scale(${scale}) rotate(${rotate}deg)`,
       zIndex,
       pointerEvents: adjustedDiff === 0 ? 'auto' as const : 'none' as const,
+      filter: adjustedDiff === 0 ? 'none' : `brightness(${0.9 - Math.abs(adjustedDiff) * 0.05})`,
     };
   };
 
   const currentFilm = films && films.length > 0 ? films[currentIndex] : null;
 
   return (
-    <section 
-      id="gallery" 
+    <section
+      id="gallery"
       ref={sectionRef}
       className="relative py-32 bg-background overflow-hidden"
     >
@@ -153,14 +162,14 @@ const GallerySectionContent = ({ films }: { films: any[] }) => {
             Films I've <span className="text-gradient">Shaped</span>
           </h2>
           <p className="font-body text-muted-foreground max-w-2xl mx-auto">
-            From blockbuster VFX work to AI-generated short films, 
+            From blockbuster VFX work to AI-generated short films,
             each project represents a step in the evolution of visual storytelling.
           </p>
         </div>
 
         {/* Stacked Cards Gallery */}
         <div className={`${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
-          <div 
+          <div
             ref={containerRef}
             className="relative h-[500px] md:h-[550px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none"
             onMouseDown={handleMouseDown}
@@ -178,7 +187,7 @@ const GallerySectionContent = ({ films }: { films: any[] }) => {
                 className="absolute w-64 md:w-72 transition-all duration-300 ease-out"
                 style={getCardStyle(index)}
               >
-                <div className="relative aspect-[2/3] rounded-2xl overflow-hidden border-2 border-border bg-card shadow-2xl">
+                <div className="relative aspect-[2/3] rounded-2xl overflow-hidden border-2 border-border bg-card shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5),0_10px_30px_-10px_rgba(0,0,0,0.4)] hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.6),0_15px_40px_-10px_rgba(0,0,0,0.5)] transition-shadow duration-300">
                   {/* Movie Poster */}
                   <img
                     src={film.image.url}
@@ -268,11 +277,10 @@ const GallerySectionContent = ({ films }: { films: any[] }) => {
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`transition-all duration-300 rounded-full ${
-                  index === currentIndex 
-                    ? 'w-8 h-2 bg-primary' 
-                    : 'w-2 h-2 bg-muted hover:bg-muted-foreground'
-                }`}
+                className={`transition-all duration-300 rounded-full ${index === currentIndex
+                  ? 'w-8 h-2 bg-primary'
+                  : 'w-2 h-2 bg-muted hover:bg-muted-foreground'
+                  }`}
               />
             ))}
           </div>
