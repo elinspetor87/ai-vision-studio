@@ -15,7 +15,7 @@ import {
     Redo,
     Code
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface RichTextEditorProps {
     content: string;
@@ -64,6 +64,13 @@ const RichTextEditor = ({
             },
         },
     });
+
+    // Update editor content when prop changes (for editing existing posts)
+    useEffect(() => {
+        if (editor && content !== editor.getHTML()) {
+            editor.commands.setContent(content);
+        }
+    }, [content, editor]);
 
     const handleImageUpload = async () => {
         const input = document.createElement('input');
