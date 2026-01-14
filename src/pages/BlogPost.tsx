@@ -143,6 +143,9 @@ const BlogPost = () => {
             <div
               className="prose prose-invert prose-lg max-w-none text-justify
                 prose-headings:font-display prose-headings:text-foreground
+                prose-h2:text-3xl prose-h2:md:text-4xl prose-h2:mt-8 prose-h2:mb-6
+                prose-h3:text-2xl prose-h3:md:text-3xl prose-h3:mt-6 prose-h3:mb-4
+                prose-h4:text-xl prose-h4:md:text-2xl prose-h4:mt-5 prose-h4:mb-3
                 prose-p:font-body prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:mb-8
                 prose-a:text-primary prose-a:no-underline hover:prose-a:underline
                 prose-strong:text-foreground prose-strong:font-semibold
