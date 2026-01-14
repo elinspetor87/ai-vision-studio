@@ -120,7 +120,9 @@ app.use('/api/calendar', calendarRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/availability', availabilityRoutes);
 app.use('/api/newsletter', newsletterRoutes);
-app.use('/', sitemapRoutes); // Sitemap at root level
+
+// Sitemap route (must be before 404 handler)
+app.use('/', sitemapRoutes);
 
 // 404 handler
 app.use((req: Request, res: Response) => {
