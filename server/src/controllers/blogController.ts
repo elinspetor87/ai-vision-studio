@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import BlogPost from '../models/BlogPost';
 import { AppError, asyncHandler } from '../middleware/error.middleware';
 import { BlogPostStatus } from '../types';
+import sanitizeHtml from 'sanitize-html';
 
 // Get all blog posts with pagination and filtering
 export const getAllPosts = asyncHandler(
@@ -132,6 +133,23 @@ export const createPost = asyncHandler(
 
     const postData = req.body;
 
+    // Sanitize HTML content
+    if (postData.content) {
+      postData.content = sanitizeHtml(postData.content, {
+        allowedTags: [
+          'h2', 'h3', 'h4', 'p', 'strong', 'em', 'ul', 'ol', 'li',
+          'a', 'img', 'blockquote', 'code', 'pre', 'br'
+        ],
+        allowedAttributes: {
+          'a': ['href', 'target', 'rel'],
+          'img': ['src', 'alt', 'title', 'class']
+        },
+        allowedClasses: {
+          'img': ['rounded-lg', 'max-w-full', 'h-auto', 'my-4']
+        }
+      });
+    }
+
     try {
       const post = await BlogPost.create(postData);
       console.log('✅ Blog post created:', post._id);
@@ -156,6 +174,23 @@ export const updatePost = asyncHandler(
 
     const { id } = req.params;
     const updateData = req.body;
+
+    // Sanitize HTML content
+    if (updateData.content) {
+      updateData.content = sanitizeHtml(updateData.content, {
+        allowedTags: [
+          'h2', 'h3', 'h4', 'p', 'strong', 'em', 'ul', 'ol', 'li',
+          'a', 'img', 'blockquote', 'code', 'pre', 'br'
+        ],
+        allowedAttributes: {
+          'a': ['href', 'target', 'rel'],
+          'img': ['src', 'alt', 'title', 'class']
+        },
+        allowedClasses: {
+          'img': ['rounded-lg', 'max-w-full', 'h-auto', 'my-4']
+        }
+      });
+    }
 
     try {
       const post = await BlogPost.findByIdAndUpdate(id, updateData, {

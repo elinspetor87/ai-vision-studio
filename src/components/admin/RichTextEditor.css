@@ -1,0 +1,66 @@
+/* Rich Text Editor Styles */
+.ProseMirror {
+  @apply min-h-[300px] max-w-none p-4 focus:outline-none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  @apply text-muted-foreground pointer-events-none float-left h-0;
+}
+
+.ProseMirror h2 {
+  @apply text-2xl font-bold mt-6 mb-4;
+}
+
+.ProseMirror h3 {
+  @apply text-xl font-bold mt-5 mb-3;
+}
+
+.ProseMirror h4 {
+  @apply text-lg font-bold mt-4 mb-2;
+}
+
+.ProseMirror p {
+  @apply mb-4;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  @apply pl-6 mb-4;
+}
+
+.ProseMirror ul {
+  @apply list-disc;
+}
+
+.ProseMirror ol {
+  @apply list-decimal;
+}
+
+.ProseMirror li {
+  @apply mb-2;
+}
+
+.ProseMirror a {
+  @apply text-primary underline hover:text-primary/80 transition-colors;
+}
+
+.ProseMirror img {
+  @apply rounded-lg max-w-full h-auto my-4;
+}
+
+.ProseMirror code {
+  @apply bg-muted px-1.5 py-0.5 rounded text-sm font-mono;
+}
+
+.ProseMirror pre {
+  @apply bg-muted p-4 rounded-lg overflow-x-auto mb-4;
+}
+
+.ProseMirror pre code {
+  @apply bg-transparent p-0;
+}
+
+.ProseMirror blockquote {
+  @apply border-l-4 border-primary pl-4 italic my-4;
+}

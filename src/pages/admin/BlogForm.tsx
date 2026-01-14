@@ -10,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { ArrowLeft, Loader2, Upload } from 'lucide-react';
 import { toast } from 'sonner';
+import RichTextEditor from '@/components/admin/RichTextEditor';
+import '@/components/admin/RichTextEditor.css';
 
 const BlogForm = () => {
   const { id } = useParams();
@@ -293,17 +295,17 @@ const BlogForm = () => {
         {/* Content */}
         <div className="space-y-2">
           <Label htmlFor="content">Content *</Label>
-          <Textarea
-            id="content"
-            value={formData.content}
-            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+          <RichTextEditor
+            content={formData.content}
+            onChange={(html) => setFormData({ ...formData, content: html })}
             placeholder="Write your blog post content here..."
-            rows={15}
-            required
-            className="font-mono"
+            onImageUpload={async (file) => {
+              const uploadResult = await uploadService.uploadBlogImage(file);
+              return uploadResult.url;
+            }}
           />
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>Supports Markdown formatting</span>
+            <span>Use the toolbar to format your content and add images</span>
             <span className={formData.content.length < 100 ? 'text-yellow-500' : 'text-green-500'}>
               {formData.content.length} / 100 characters minimum
             </span>
