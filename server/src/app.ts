@@ -23,6 +23,7 @@ import calendarRoutes from './routes/calendar.routes';
 import contactRoutes from './routes/contact.routes';
 import availabilityRoutes from './routes/availability.routes';
 import newsletterRoutes from './routes/newsletter';
+import sitemapRoutes from './routes/sitemap.routes';
 
 const app: Application = express();
 
@@ -119,6 +120,7 @@ app.use('/api/calendar', calendarRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/availability', availabilityRoutes);
 app.use('/api/newsletter', newsletterRoutes);
+app.use('/', sitemapRoutes); // Sitemap at root level
 
 // 404 handler
 app.use((req: Request, res: Response) => {
