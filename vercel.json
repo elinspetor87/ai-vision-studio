@@ -5,6 +5,14 @@
     "installCommand": "npm install",
     "rewrites": [
         {
+            "source": "/sitemap.xml",
+            "destination": "https://api.felipealmeida.studio/sitemap.xml"
+        },
+        {
+            "source": "/robots.txt",
+            "destination": "https://api.felipealmeida.studio/robots.txt"
+        },
+        {
             "source": "/(.*)",
             "destination": "/index.html"
         }
