@@ -142,8 +142,10 @@ export const getAvailableSlots = asyncHandler(
       throw new AppError('Date is required', 400);
     }
 
-    const dateObj = new Date(date as string);
-    dateObj.setHours(0, 0, 0, 0);
+    // Parse date ensuring UTC (YYYY-MM-DD -> T00:00:00.000Z)
+    const [year, month, day] = (date as string).split('-').map(Number);
+    const dateObj = new Date(Date.UTC(year, month - 1, day));
+    // Removed setHours to prevent timezone shift
 
     // All possible time slots
     const allSlots = [

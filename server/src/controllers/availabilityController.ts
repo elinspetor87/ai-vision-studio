@@ -35,8 +35,10 @@ export const getAvailabilityByDate = asyncHandler(
       throw new AppError('Date is required', 400);
     }
 
-    const dateObj = new Date(date as string);
-    dateObj.setHours(0, 0, 0, 0);
+    // Parse date ensuring UTC (YYYY-MM-DD -> T00:00:00.000Z)
+    const [year, month, day] = (date as string).split('-').map(Number);
+    const dateObj = new Date(Date.UTC(year, month - 1, day));
+    // Removed setHours to prevent timezone shift
 
     // All possible time slots
     const allSlots = [
@@ -93,15 +95,18 @@ export const setAvailability = asyncHandler(
       throw new AppError('Date is required', 400);
     }
 
-    // Handle date string to ensure correct Date object
-    const dateObj = new Date(date);
+    // Handle date string to ensure correct Date object without timezone shift
+    // We expect YYYY-MM-DD from frontend. We want YYYY-MM-DD T00:00:00.000 Z
+    const [year, month, day] = date.split('-').map(Number);
+    const dateObj = new Date(Date.UTC(year, month - 1, day));
+
     if (isNaN(dateObj.getTime())) {
       console.warn('❌ Invalid date format:', date);
       throw new AppError('Invalid date format', 400);
     }
-    dateObj.setHours(0, 0, 0, 0);
+    // Removed setHours to avoid local timezone interference
 
-    console.log('🗓️ Processed Date:', dateObj.toISOString());
+    console.log('🗓️ Processed Date (UTC):', dateObj.toISOString());
 
     // Upsert (update or insert)
     const availability = await TimeSlotAvailability.findOneAndUpdate(
@@ -147,8 +152,8 @@ export const resetAvailability = asyncHandler(
       throw new AppError('Date is required', 400);
     }
 
-    const dateObj = new Date(date);
-    dateObj.setHours(0, 0, 0, 0);
+    const [year, month, day] = date.split('-').map(Number);
+    const dateObj = new Date(Date.UTC(year, month - 1, day));
 
     await TimeSlotAvailability.findOneAndDelete({ date: dateObj });
 
@@ -168,8 +173,8 @@ export const copyAvailability = asyncHandler(
       throw new AppError('Source date and target dates are required', 400);
     }
 
-    const sourceDateObj = new Date(sourceDate);
-    sourceDateObj.setHours(0, 0, 0, 0);
+    const [sYear, sMonth, sDay] = sourceDate.split('-').map(Number);
+    const sourceDateObj = new Date(Date.UTC(sYear, sMonth - 1, sDay));
 
     // Get the source availability configuration
     const sourceAvailability = await TimeSlotAvailability.findOne({ date: sourceDateObj });
@@ -180,8 +185,8 @@ export const copyAvailability = asyncHandler(
 
     // Copy to all target dates
     const operations = targetDates.map(async (targetDate: string) => {
-      const targetDateObj = new Date(targetDate);
-      targetDateObj.setHours(0, 0, 0, 0);
+      const [tYear, tMonth, tDay] = targetDate.split('-').map(Number);
+      const targetDateObj = new Date(Date.UTC(tYear, tMonth - 1, tDay));
 
       return TimeSlotAvailability.findOneAndUpdate(
         { date: targetDateObj },
