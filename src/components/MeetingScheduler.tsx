@@ -12,13 +12,17 @@ import { contactService } from '@/services/contactService';
 import api from '@/config/api';
 
 const allTimeSlots = [
+  '08:00 AM',
   '09:00 AM',
   '10:00 AM',
   '11:00 AM',
+  '12:00 PM',
+  '01:00 PM',
   '02:00 PM',
   '03:00 PM',
   '04:00 PM',
   '05:00 PM',
+  '06:00 PM',
 ];
 
 const MeetingScheduler = () => {
@@ -262,7 +266,7 @@ const MeetingScheduler = () => {
                     <User className="w-6 h-6 text-primary" />
                     <h3 className="font-display text-2xl font-bold">Your Details</h3>
                   </div>
-                  
+
                   {/* Selected slot summary */}
                   <div className="mb-8 p-4 bg-primary/10 rounded-xl border border-primary/20 text-center">
                     <p className="font-body text-sm text-primary font-medium">
