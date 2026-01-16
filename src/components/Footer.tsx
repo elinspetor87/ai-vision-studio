@@ -88,11 +88,11 @@ const Footer = () => {
           {/* Contact Info */}
           <div className="flex items-center gap-6">
             <a
-              href={`mailto:${settings?.contactEmail || 'hello@aifilmmaker.com'}`}
+              href={`mailto:${settings?.contactEmail || 'getintouch@felipealmeida.studio'}`}
               className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300"
             >
               <Mail className="w-4 h-4" />
-              <span className="font-body text-sm">{settings?.contactEmail || 'hello@aifilmmaker.com'}</span>
+              <span className="font-body text-sm">{settings?.contactEmail || 'getintouch@felipealmeida.studio'}</span>
             </a>
 
             {socialLinks.length > 0 && (
