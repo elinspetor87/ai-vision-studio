@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
@@ -43,7 +43,7 @@ const AvailabilityManagement = () => {
   });
 
   // Update availability when data is loaded
-  useState(() => {
+  useEffect(() => {
     if (availability) {
       setSelectedSlots(availability.availableSlots || [...ALL_TIME_SLOTS]);
       setIsBlocked(availability.isBlocked || false);
@@ -53,7 +53,7 @@ const AvailabilityManagement = () => {
       setIsBlocked(false);
       setNotes('');
     }
-  });
+  }, [availability, selectedDate]);
 
   // Mutation to save availability
   const saveMutation = useMutation({
