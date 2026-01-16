@@ -15,6 +15,7 @@ export interface IBlogPost extends Document {
   status: BlogPostStatus;
   featured: boolean;
   views: number;
+  viewedIps: string[];
   author: {
     name: string;
     avatar?: string;
@@ -101,6 +102,11 @@ const blogPostSchema = new Schema<IBlogPost>(
     views: {
       type: Number,
       default: 0,
+    },
+    viewedIps: {
+      type: [String],
+      default: [],
+      select: false,
     },
     author: {
       name: {

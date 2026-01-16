@@ -86,19 +86,41 @@ export const getFeaturedPosts = asyncHandler(
 );
 
 // Get single blog post by slug
+// Get single blog post by slug
 export const getPostBySlug = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { slug } = req.params;
 
-    const post = await BlogPost.findOne({ slug });
+    // Get Client IP
+    let clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
+    if (Array.isArray(clientIp)) clientIp = clientIp[0];
+
+    // Find the post first to ensure it exists
+    let post = await BlogPost.findOne({ slug });
 
     if (!post) {
       throw new AppError('Blog post not found', 404);
     }
 
-    // Increment view count
-    post.views += 1;
-    await post.save();
+    // Attempt to increment unique view
+    if (clientIp) {
+      const updatedPost = await BlogPost.findOneAndUpdate(
+        {
+          slug,
+          viewedIps: { $ne: clientIp } // Only if IP is NOT in array
+        },
+        {
+          $inc: { views: 1 },
+          $addToSet: { viewedIps: clientIp }
+        },
+        { new: true } // Return updated document
+      );
+
+      // If updatedPost exists, it means this was a new unique view
+      if (updatedPost) {
+        post = updatedPost;
+      }
+    }
 
     res.status(200).json({
       success: true,
