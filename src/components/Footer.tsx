@@ -81,7 +81,7 @@ const Footer = () => {
               <Film className="w-6 h-6 text-primary transition-transform duration-300 group-hover:rotate-12" />
             )}
             <span className="font-display text-lg font-semibold tracking-wide">
-              {settings?.logoText || 'FILMMAKER'}
+              {settings?.logoText || 'FELIPE ALMEIDA'}
             </span>
           </a>
 
@@ -119,8 +119,8 @@ const Footer = () => {
 
           {/* Copyright */}
           <p className="font-body text-sm text-muted-foreground flex items-center gap-1">
-            © {new Date().getFullYear()} Crafted with 
-            <Heart className="w-4 h-4 text-primary" /> 
+            © {new Date().getFullYear()} Crafted with
+            <Heart className="w-4 h-4 text-primary" />
             and imagination.
           </p>
         </div>

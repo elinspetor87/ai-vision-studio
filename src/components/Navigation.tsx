@@ -63,7 +63,7 @@ const Navigation = () => {
               <Film className="w-8 h-8 text-primary transition-transform duration-300 group-hover:rotate-12" />
             )}
             <span className="font-display text-xl font-semibold tracking-wide">
-              {settings?.logoText || 'FILMMAKER'}
+              {settings?.logoText || 'FELIPE ALMEIDA'}
             </span>
           </Link>
 

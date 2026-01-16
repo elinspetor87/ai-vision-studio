@@ -114,19 +114,28 @@ export const updateFilm = asyncHandler(
 export const deleteFilm = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
+    console.log(`🗑️ Attempting to delete film with ID: ${id}`);
 
-    const film = await Film.findByIdAndDelete(id);
+    try {
+      const film = await Film.findByIdAndDelete(id);
 
-    if (!film) {
-      throw new AppError('Film not found', 404);
+      if (!film) {
+        console.warn(`⚠️ Film not found for deletion: ${id}`);
+        throw new AppError('Film not found', 404);
+      }
+
+      console.log(`✅ Successfully deleted film: ${id} (${film.title})`);
+
+      // TODO: Delete associated image from Cloudinary if needed
+
+      res.status(200).json({
+        success: true,
+        message: 'Film deleted successfully',
+      });
+    } catch (error) {
+      console.error(`❌ Error deleting film ${id}:`, error);
+      throw error;
     }
-
-    // TODO: Delete associated image from Cloudinary if needed
-
-    res.status(200).json({
-      success: true,
-      message: 'Film deleted successfully',
-    });
   }
 );
 
