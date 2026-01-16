@@ -211,7 +211,7 @@ const settingsSchema = new Schema<ISettings>(
     },
     logoText: {
       type: String,
-      default: 'FILMMAKER',
+      default: 'FELIPE ALMEIDA',
     },
     favicon: {
       url: {
@@ -225,7 +225,7 @@ const settingsSchema = new Schema<ISettings>(
     },
     contactEmail: {
       type: String,
-      default: 'hello@aifilmmaker.com',
+      default: 'getintouch@felipealmeida.studio',
     },
     heroSection: {
       line1: {
