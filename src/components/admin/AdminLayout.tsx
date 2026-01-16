@@ -16,6 +16,7 @@ import {
   Mail,
   Clock,
   Megaphone,
+  FolderKanban,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -26,7 +27,7 @@ const navigation = [
   { name: 'Availability', href: '/admin/availability', icon: Clock },
   { name: 'Blog Posts', href: '/admin/blog', icon: FileText },
   { name: 'Comments', href: '/admin/comments', icon: MessageCircle },
-  { name: 'Calendar', href: '/admin/calendar', icon: Calendar },
+  { name: 'Projects', href: '/admin/projects', icon: FolderKanban },
   { name: 'Newsletter', href: '/admin/newsletter', icon: Megaphone },
   { name: 'Films', href: '/admin/films', icon: Film },
   { name: 'Videos', href: '/admin/videos', icon: Video },
@@ -84,8 +85,8 @@ const AdminLayout = () => {
                   to={item.href}
                   onClick={() => setSidebarOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg font-body text-sm font-medium transition-colors ${isActive
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                     }`}
                 >
                   <item.icon className="w-5 h-5" />

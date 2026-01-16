@@ -35,7 +35,8 @@ import UserForm from "./pages/admin/UserForm";
 import SettingsManagement from "./pages/admin/SettingsManagement";
 import CommentsManagement from "./pages/admin/CommentsManagement";
 import SocialMediaManagement from "./pages/admin/SocialMediaManagement";
-import CalendarManagement from "./pages/admin/CalendarManagement";
+import ProjectsManagement from "./pages/admin/ProjectsManagement";
+import ProjectForm from "./pages/admin/ProjectForm";
 import Messages from "./pages/admin/Messages";
 import AvailabilityManagement from "./pages/admin/AvailabilityManagement";
 import Test from "./pages/admin/Test";
@@ -98,7 +99,9 @@ const AppContent = () => {
         <Route path="messages" element={<Messages />} />
         <Route path="availability" element={<AvailabilityManagement />} />
         <Route path="social-media" element={<SocialMediaManagement />} />
-        <Route path="calendar" element={<CalendarManagement />} />
+        <Route path="projects" element={<ProjectsManagement />} />
+        <Route path="projects/add" element={<ProjectForm />} />
+        <Route path="projects/edit/:id" element={<ProjectForm />} />
         <Route path="newsletter" element={<NewsletterManagement />} />
         <Route path="settings" element={<SettingsManagement />} />
       </Route>
