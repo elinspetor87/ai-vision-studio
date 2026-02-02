@@ -27,8 +27,8 @@ const HeroSection = () => {
     line1: 'Crafting',
     line2: 'Visual Stories',
     line3: 'with AI',
-    tagline: 'AI Filmmaker & VFX Artist',
-    description: 'Blending decades of VFX expertise with cutting-edge AI technology to create cinematic experiences that push the boundaries of imagination.',
+    tagline: 'AI Filmmaker Freelancer & VFX Artist',
+    description: 'Hire a professional AI Filmmaker Freelancer blending decades of VFX expertise with cutting-edge AI technology to create cinematic experiences for brands and artists.',
     animation: {
       animationType: 'fadeSlide' as const,
       speed: 800,

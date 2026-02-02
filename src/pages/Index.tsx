@@ -58,12 +58,12 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>Felipe Almeida | Visual Director & AI Filmmaker</title>
+        <title>AI Filmmaker Freelancer | Felipe Almeida | Visual Director</title>
         <meta
           name="description"
-          content="Portfolio of Felipe Almeida, a Visual Director and AI Filmmaker with 15+ years of experience in VFX and storytelling. Specializing in AI-generated content and premium visual effects."
+          content="Hire Felipe Almeida, a top-tier AI Filmmaker Freelancer and Visual Director. Expert in AI video production, VFX, and cinematic storytelling for commercials, music videos, and films."
         />
-        <meta name="keywords" content="Felipe Almeida, AI Filmmaker, Visual Director, VFX Artist, AI Video, Midjourney, Gen-3 Alpha, Kling AI, ComfyUI" />
+        <meta name="keywords" content="AI Filmmaker Freelancer, Freelance AI Video Artist, Hire AI Video Editor, AI Music Video Director, Felipe Almeida, VFX Artist, Midjourney, Gen-3 Alpha, Kling AI, ComfyUI" />
         <link rel="canonical" href="https://www.felipealmeida.studio/" />
       </Helmet>
 

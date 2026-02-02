@@ -28,9 +28,9 @@ const AboutSection = () => {
   const aboutData = settings?.aboutSection || {
     sectionTitle: 'The Journey',
     heading: 'From VFX Pioneer to',
-    headingHighlight: 'AI Visionary',
+    headingHighlight: 'Freelance AI Visionary',
     paragraph1: "Based in Dublin, with over 15 years in visual effects, I've had the privilege of working on blockbuster films that have captivated audiences worldwide. From intricate compositing work to leading VFX teams, my journey has been defined by a relentless pursuit of visual excellence.",
-    paragraph2: "Today, I'm pioneering the integration of AI into filmmaking—leveraging tools like Midjourney, Runway, and Sora to create imagery that was once impossible. My VFX background gives me a unique edge: I understand both the art and the technique.",
+    paragraph2: "Today, as a freelance AI filmmaker, I help brands and diverse clients integrate AI into filmmaking—leveraging tools like Midjourney, Runway, and Sora to create imagery that was once impossible. My VFX background gives me a unique edge: I understand both the art and the technique.",
     stats: {
       filmsShows: '50+',
       yearsExp: '15+',
