@@ -58,13 +58,13 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>AI Filmmaker & VFX Artist | Portfolio</title>
+        <title>Felipe Almeida | Visual Director & AI Filmmaker</title>
         <meta
           name="description"
-          content="VFX artist turned AI filmmaker. 15+ years crafting visual stories for blockbuster films. Specializing in AI-generated content and cutting-edge visual effects."
+          content="Portfolio of Felipe Almeida, a Visual Director and AI Filmmaker with 15+ years of experience in VFX and storytelling. Specializing in AI-generated content and premium visual effects."
         />
-        <meta name="keywords" content="AI filmmaker, VFX artist, visual effects, AI video, Midjourney, Runway, Sora, filmmaking" />
-        <link rel="canonical" href="https://aifilmmaker.com" />
+        <meta name="keywords" content="Felipe Almeida, AI Filmmaker, Visual Director, VFX Artist, AI Video, Midjourney, Gen-3 Alpha, Kling AI, ComfyUI" />
+        <link rel="canonical" href="https://www.felipealmeida.studio/" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
